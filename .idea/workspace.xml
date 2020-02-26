@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fbbb0fd3-39d8-44d4-b962-d803594ef800" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
@@ -27,7 +26,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -51,7 +50,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.my_data">
+  <component name="RunManager" selected="Python.server">
     <configuration name="my_data" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="OPC" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -117,8 +116,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.my_data" />
         <item itemvalue="Python.server" />
+        <item itemvalue="Python.my_data" />
         <item itemvalue="Python.tests" />
       </list>
     </recent_temporary>

@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-from threading import Thread
 import copy
 import logging
 from datetime import datetime
@@ -8,6 +7,7 @@ import sys
 import random
 import asyncio
 import my_data
+import multiprocessing
 
 sys.path.insert(0, "..")
 
@@ -50,24 +50,45 @@ def config_to_opc_nodes(server):
         #next plc, next namespace -> increment ns
         ns = ns + 1
 
-
+var2 = None
 # create my_data objects, group by PLC
-def create_my_data_groups():
+def create_my_data_groups(server):
+    global var2
     tree = ET.parse('config.xml')
     root = tree.getroot()
+    # namespace number, for nodeid creation
+    ns = 2
     groups = []
     # get all configured plc
     for p in root:  # PLC
         my_list = []
+        # First a folder to organise our nodes and setup our own namespace
+        idx = server.register_namespace(p.text)
+        myfolder = server.nodes.objects.add_folder(idx, p.text)
+        # table for varaible grouping and updating
         for data in p:
+            # OPC UA PART ------------------------------------
+            dev = myfolder.add_object(idx, data[3].text)
+            dev.add_variable(idx, "PLC", p.text)
+            dev.add_variable(idx, "Type", data[0].text)
+            dev.add_variable(idx, "Address", data[2].text)
+            nodeid = "ns={0};s={1}".format(ns, data[3].text)
+            var1 = dev.add_variable(nodeid, "Value", 0.0)
+            var1.set_writable()
+            # ------------------------------------------------
             sl = p.get('slot')
             if sl is None:
                 sl = "1"
             m = my_data.my_data(p.text, data[0].text, data[1].text, data[2].text, data[3].text, data[4].text, sl)
+            #add reference to opc ua server variable
+            m.m_opcua_var = var1
             if eval(data[4].text):
                 my_list.append(m)
+        # next plc, next namespace -> increment ns
+        ns = ns + 1
         group = my_data.my_group(my_list)
         groups.append(group)
+        var2 = var1
     return groups
 
 
@@ -113,6 +134,13 @@ class VarUpdater():
                 #print(v)
                 await asyncio.sleep(0.05)
 
+def test(varsa):
+    global var2
+    while True:
+        print('test')
+        varsa.set_value(1.0) # na tym gownie sie blokuje w multiprocessing
+
+
 
 if __name__ == "__main__":
     # optional: setup logging
@@ -128,13 +156,9 @@ if __name__ == "__main__":
         ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
         ua.SecurityPolicyType.Basic256Sha256_Sign])
 
-
-    # CREATE MY OBJECTS in opc ua server
-    config_to_opc_nodes(server)
-
-    #create my_groups to update values to update them later
-    groups = create_my_data_groups()
-
+    # Initialize OPC UA server with variables
+    #create my_groups to update values later
+    groups = create_my_data_groups(server)
 
     # creating a default event object
     # The event object automatically will have members for all events properties
@@ -145,20 +169,21 @@ if __name__ == "__main__":
     # starting!
     server.start()
     print("Available loggers are: ", logging.Logger.manager.loggerDict.keys())
-
-    #vup_table = []
+    jobs = []
+    multiprocessing.set_start_method('spawn')
     try:
-        #loop = asyncio.get_event_loop()
         # create variable updater for each group and start it
-        #for g in groups:
-            #vup = VarUpdater(g)
-            #vup_table.append(vup)
-            #asyncio.run_coroutine_threadsafe(vup.run(),loop)
-
-        #loop.run_forever()
+        for g in groups:
+            process = multiprocessing.Process(target=test,args=(g.m_data_list[0].m_opcua_var,)) # blokada
+            jobs.append(process)
+        for j in jobs:
+            j.start()
+            print(j.get())
         embed()
     finally:
         # stop all variable updaters
-        #for v in vup_table:
-        #    v.stop()
+        for g in groups:
+            g.stop()
+        for j in jobs:
+            j.join()
         server.stop()
