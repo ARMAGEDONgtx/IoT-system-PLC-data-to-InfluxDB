@@ -7,6 +7,7 @@ import time
 import sys
 import random
 import asyncio
+import my_data
 
 sys.path.insert(0, "..")
 
@@ -23,9 +24,8 @@ except ImportError:
 
 from opcua import ua, uamethod, Server
 
+
 def config_to_opc_nodes(server):
-    # group data in lists by plc
-    group_list=[]
     #open xml config
     tree = ET.parse('config.xml')
     root = tree.getroot()
@@ -49,9 +49,26 @@ def config_to_opc_nodes(server):
             group.append(var6)
         #next plc, next namespace -> increment ns
         ns = ns + 1
-        group_list.append(group)
-    # return, groups gathered in list
-    return  group_list
+
+
+# create my_data objects, group by PLC
+def create_my_data_groups():
+    tree = ET.parse('config.xml')
+    root = tree.getroot()
+    groups = []
+    # get all configured plc
+    for p in root:  # PLC
+        my_list = []
+        for data in p:
+            sl = p.get('slot')
+            if sl is None:
+                sl = "1"
+            m = my_data.my_data(p.text, data[0].text, data[1].text, data[2].text, data[3].text, data[4].text, sl)
+            if eval(data[4].text):
+                my_list.append(m)
+        group = my_data.my_group(my_list)
+        groups.append(group)
+    return groups
 
 
 class SubHandler(object):
@@ -112,8 +129,11 @@ if __name__ == "__main__":
         ua.SecurityPolicyType.Basic256Sha256_Sign])
 
 
-    # CREATE MY OBJECTS
-    groups = config_to_opc_nodes(server)
+    # CREATE MY OBJECTS in opc ua server
+    config_to_opc_nodes(server)
+
+    #create my_groups to update values to update them later
+    groups = create_my_data_groups()
 
 
     # creating a default event object
@@ -126,19 +146,19 @@ if __name__ == "__main__":
     server.start()
     print("Available loggers are: ", logging.Logger.manager.loggerDict.keys())
 
-    vup_table = []
+    #vup_table = []
     try:
-        loop = asyncio.get_event_loop()
+        #loop = asyncio.get_event_loop()
         # create variable updater for each group and start it
-        for g in groups:
-            vup = VarUpdater(g)
-            vup_table.append(vup)
-            asyncio.run_coroutine_threadsafe(vup.run(),loop)
+        #for g in groups:
+            #vup = VarUpdater(g)
+            #vup_table.append(vup)
+            #asyncio.run_coroutine_threadsafe(vup.run(),loop)
 
-        loop.run_forever()
+        #loop.run_forever()
         embed()
     finally:
         # stop all variable updaters
-        for v in vup_table:
-            v.stop()
+        #for v in vup_table:
+        #    v.stop()
         server.stop()
