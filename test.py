@@ -156,6 +156,12 @@ class TestService(win32serviceutil.ServiceFramework):
     _svc_name_ = "InfluxConnector3.0"
     _svc_display_name_ = "InfluxConnector3.0"
 
+    host = '10.14.12.83'
+    port = 8086
+    user = 'poziadmin'
+    password = 'QpAlZm1!'
+    db_name='PLC2InfluxDB'
+
     def __init__(self, args):
         win32serviceutil.ServiceFramework.__init__(self, args)
         self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
@@ -183,10 +189,36 @@ class TestService(win32serviceutil.ServiceFramework):
             rc = win32event.WaitForSingleObject(self.hWaitStop, 5000)
 
 
+
+groups = create_my_data_groups()
+
+def test1():
+        groups[0].update_items()
+
+
+def test2():
+    groups[1].update_items()
+
+def test3():
+    groups[2].update_items()
+
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        servicemanager.Initialize()
-        servicemanager.PrepareToHostSingle(TestService)
-        servicemanager.StartServiceCtrlDispatcher()
-    else:
-        win32serviceutil.HandleCommandLine(TestService)
+    # create my_groups to update values later
+
+    jobs = []
+    try:
+        process = multiprocessing.Process(target=test1)
+        jobs.append(process)
+        process = multiprocessing.Process(target=test2)
+        jobs.append(process)
+        process = multiprocessing.Process(target=test3)
+        jobs.append(process)
+        for j in jobs:
+                j.start()
+    except Exception as e:
+        print(str(e))
+    finally:
+        for g in groups:
+            g.stop()
+        for j in jobs:
+            j.join()
