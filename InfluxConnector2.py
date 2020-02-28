@@ -33,7 +33,8 @@ class my_data():
 
 
 class my_group():
-    def __init__(self, data_list):
+    def __init__(self, data_list, lock):
+        self.m_lock = lock
         self._stopev = False
         self.m_data_list= data_list
         self.plc = snap7.client.Client()
@@ -46,7 +47,9 @@ class my_group():
         self.client.create_database(self.db_name)
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
+            self.m_lock.acquire()
             self.plc.connect(self.m_data_list[0].m_plc, 0, eval(self.m_data_list[0].m_slot))
+            self.m_lock.release()
 
     #assure to disconnect
     def __del__(self):
@@ -71,8 +74,10 @@ class my_group():
                 value = None
                 if len(address) > 0:  # assure there was some address
                     if eval(data.m_area) == 132 and len(address) >= 2:  # DB
+                        self.m_lock.acquire()
                         result = self.plc.read_area(eval(data.m_area), eval(address[0]), eval(address[1]),
                                                          eval(data.m_type))
+                        self.m_lock.release()
                         if eval(data.m_type) == S7WLReal:
                             value = get_real(result, 0)
                         elif eval(data.m_type) == S7WLDWord:
@@ -85,7 +90,9 @@ class my_group():
                                 value = int(get_bool(result, 0, eval(address[2])))
                     elif (eval(data.m_area) == S7AreaPA or eval(data.m_area) == S7AreaPE or eval(
                                 data.m_area) == S7AreaMK) and len(address) >= 1:  # Memory / In Out
+                        self.m_lock.acquire()
                         result = self.plc.read_area(eval(data.m_area), 0, eval(address[0]), eval(data.m_type))
+                        self.m_lock.release()
                         if eval(data.m_type) == S7WLReal:
                             value = get_real(result, 0)
                         elif eval(data.m_type) == S7WLDWord:
@@ -103,12 +110,15 @@ class my_group():
                     json_body1 = create_my_json(data.m_plc, data.m_alias, value)
                     self.client.write_points(json_body1)
         except Exception as e:
-            print(str(e))
+            self.m_lock.acquire()
+            with open('C:\\InfluxDBService.log', 'a') as f:
+                f.write(str(e) + '\n')
             # error - try recconecting to plc
             self.plc.disconnect()
             # assure, that there is some data in list
             if len(self.m_data_list) > 0:
                 self.plc.connect(self.m_data_list[0].m_plc, 0, eval(self.m_data_list[0].m_slot))
+            self.m_lock.release()
 
 
 # Function to extract all the numbers from the given string
@@ -133,6 +143,8 @@ def create_my_json(mes, name, value):
 
 # create my_data objects, group by PLC
 def create_my_data_groups():
+    # lock for threading
+    my_lock = multiprocessing.Lock()
     tree = ET.parse('C:\config.xml')
     root = tree.getroot()
     groups = []
@@ -148,13 +160,14 @@ def create_my_data_groups():
             #add reference to opc ua server variable
             if eval(data[4].text):
                 my_list.append(m)
-        group = my_group(my_list)
+        group = my_group(my_list,my_lock)
         groups.append(group)
     return groups
 
+
 class TestService(win32serviceutil.ServiceFramework):
-    _svc_name_ = "InfluxConnector3.0"
-    _svc_display_name_ = "InfluxConnector3.0"
+    _svc_name_ = "InfluxConnector4.0"
+    _svc_display_name_ = "InfluxConnector4.0"
 
     def __init__(self, args):
         win32serviceutil.ServiceFramework.__init__(self, args)
@@ -168,22 +181,48 @@ class TestService(win32serviceutil.ServiceFramework):
     def SvcDoRun(self):
         rc = None
         try:
-            # create my_groups to update values later
-            groups = create_my_data_groups()
+            while rc != win32event.WAIT_OBJECT_0:
+                rc = win32event.WaitForSingleObject(self.hWaitStop, 5000)
         except Exception as e:
-            with open('C:\\InfluxDBService.log', 'a') as f:
-                f.write(str(e)+'\n')
-        while rc != win32event.WAIT_OBJECT_0:
-            try:
-                for g in groups:
-                    g.update_items()
-            except Exception as e:
-                with open('C:\\InfluxDBService.log', 'a') as f:
+             with open('C:\\InfluxDBService.log', 'a') as f:
                     f.write(str(e) + '\n')
-            rc = win32event.WaitForSingleObject(self.hWaitStop, 5000)
 
+
+groups = create_my_data_groups()
+
+def test1():
+    while not groups[0]._stopev:
+        groups[0].update_items()
+
+
+def test2():
+    while not groups[1]._stopev:
+        groups[1].update_items()
+
+def test3():
+    while not groups[2]._stopev:
+        groups[2].update_items()
 
 if __name__ == '__main__':
+    jobs = []
+    try:
+        process = multiprocessing.Process(target=test1)
+        jobs.append(process)
+        process = multiprocessing.Process(target=test3)
+        jobs.append(process)
+        process = multiprocessing.Process(target=test2)
+        jobs.append(process)
+        for j in jobs:
+                j.start()
+                time.sleep(0.5)
+    except Exception as e:
+        print(str(e))
+    finally:
+        for g in groups:
+            g.stop()
+        for j in jobs:
+            j.join()
+
     if len(sys.argv) == 1:
         servicemanager.Initialize()
         servicemanager.PrepareToHostSingle(TestService)
