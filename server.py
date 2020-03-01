@@ -8,6 +8,7 @@ import random
 import asyncio
 import my_data
 import multiprocessing
+import opcua
 
 sys.path.insert(0, "..")
 
@@ -50,7 +51,7 @@ def config_to_opc_nodes(server):
         #next plc, next namespace -> increment ns
         ns = ns + 1
 
-var2 = None
+
 # create my_data objects, group by PLC
 def create_my_data_groups(server):
     global var2
@@ -80,15 +81,14 @@ def create_my_data_groups(server):
             if sl is None:
                 sl = "1"
             m = my_data.my_data(p.text, data[0].text, data[1].text, data[2].text, data[3].text, data[4].text, sl)
-            #add reference to opc ua server variable
-            m.m_opcua_var = var1
+            #add nodid - will be updated in another process by nodeid
+            m.m_opcua_var = nodeid
             if eval(data[4].text):
                 my_list.append(m)
         # next plc, next namespace -> increment ns
         ns = ns + 1
         group = my_data.my_group(my_list)
         groups.append(group)
-        var2 = var1
     return groups
 
 
@@ -134,47 +134,48 @@ class VarUpdater():
                 #print(v)
                 await asyncio.sleep(0.05)
 
-def test(varsa):
-    global var2
-    while True:
-        print('test')
-        varsa.set_value(1.0) # na tym gownie sie blokuje w multiprocessing
 
-
-
-if __name__ == "__main__":
-    # optional: setup logging
-    logging.basicConfig(level=logging.WARN)
-    # now setup our server
-    server = Server()
-    # server.disable_clock()
-    server.set_endpoint("opc.tcp://0.0.0.0:4840/freeopcua/server/")
-    server.set_server_name("M.W opcua-influxdb")
-    # set all possible endpoint policies for clients to connect through
-    server.set_security_policy([
+# optional: setup logging
+logging.basicConfig(level=logging.WARN)
+# now setup our server
+server = Server()
+# server.disable_clock()
+server.set_endpoint("opc.tcp://0.0.0.0:4840/freeopcua/server/")
+server.set_server_name("M.W opcua-influxdb")
+# set all possible endpoint policies for clients to connect through
+server.set_security_policy([
         ua.SecurityPolicyType.NoSecurity,
         ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
         ua.SecurityPolicyType.Basic256Sha256_Sign])
 
-    # Initialize OPC UA server with variables
-    #create my_groups to update values later
-    groups = create_my_data_groups(server)
+# creating a default event object
+# The event object automatically will have members for all events properties
+# you probably want to create a custom event type, see other examples
+myevgen = server.get_event_generator()
+myevgen.event.Severity = 300
 
-    # creating a default event object
-    # The event object automatically will have members for all events properties
-    # you probably want to create a custom event type, see other examples
-    myevgen = server.get_event_generator()
-    myevgen.event.Severity = 300
+# starting!
+server.start()
 
-    # starting!
-    server.start()
+# Initialize OPC UA server with variables
+#create my_groups to update values later
+groups = create_my_data_groups(server)
+
+
+def test():
+    groups[0].sim_update()
+
+
+
+if __name__ == "__main__":
+
     print("Available loggers are: ", logging.Logger.manager.loggerDict.keys())
     jobs = []
-    multiprocessing.set_start_method('spawn')
+    #groups[1].sim_update()
     try:
         # create variable updater for each group and start it
         for g in groups:
-            process = multiprocessing.Process(target=test,args=(g.m_data_list[0].m_opcua_var,)) # blokada
+            process = multiprocessing.Process(target=test) # blokada
             jobs.append(process)
         for j in jobs:
             j.start()

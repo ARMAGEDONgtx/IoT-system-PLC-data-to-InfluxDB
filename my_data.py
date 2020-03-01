@@ -5,12 +5,10 @@ import snap7
 import time
 from snap7.util import *
 from snap7.snap7types import *
-import asyncio
 import random
 
-
 class my_data():
-    def __init__(self, plc , type , area , address, alias , active, slot, opcua_var = None):
+    def __init__(self, plc , type , area , address, alias , active, slot, opcua_var_id = None):
         self.m_plc = plc
         self.m_type = type
         self.m_area = area
@@ -19,7 +17,7 @@ class my_data():
         self.m_active = active
         self.m_slot = slot
         self.m_value = 0.0
-        self.m_opcua_var = opcua_var
+        self.m_opcua_var = opcua_var_id
 
     def show(self):
         print("PLC IP: {0}, TYPE: {1}, AREA: {2}, ADDRESS: {3}, ALIAS: {4}, ACTIVE: {5}".format(
@@ -32,6 +30,9 @@ class my_group():
         self._stopev = False
         self.m_data_list= data_list
         self.plc = snap7.client.Client()
+        #create client to opcua server - in multithreading it's necessery to update this way
+        #self.ua_client = opcua.Client("opc.tcp://localhost:4840/freeopcua/server/")
+        #self.ua_client.connect()
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
             #self.plc.connect(self.m_data_list[0].m_address, 0, self.m_data_list[0].m_slot)
@@ -40,6 +41,7 @@ class my_group():
     #assure to disconnect
     def __del__(self):
         self.plc.disconnect()
+        #self.ua_client.disconnect()
 
     def stop(self):
         self._stopev = True
@@ -102,11 +104,14 @@ class my_group():
                 self.plc.connect(self.m_data_list[0].m_address, 0, self.m_data_list[0].m_slot)
 
     def sim_update(self):
-        while(self._stopev != True):
-            for d in self.m_data_list:
-                if d.m_opcua_var is not None:
-                    d.show()
-                    d.m_opcua_var.set_value(random.uniform(0.0,100.0))
+        pass
+       # while(self._stopev != True):
+           # for d in self.m_data_list:
+               # d.value = random.uniform(0.0,100.0)
+               # if d.m_opcua_var is not None:
+                    #d.show()
+                    #var = self.ua_client.get_node(d.m_opcua_var)
+                    #var.set_value(d.value)
 
 
 # Function to extract all the numbers from the given string
