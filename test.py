@@ -99,7 +99,7 @@ class my_group():
                         self.m_lock.acquire()
                         result = self.plc.read_area(eval(data.m_area), 0, eval(address[0]), eval(data.m_type))
                         self.m_lock.release()
-                        if eval(data.m_type) == S7WLReal
+                        if eval(data.m_type) == S7WLReal:
                             value = get_real(result, 0)
                         elif eval(data.m_type) == S7WLDWord:
                             value = get_dword(result, 0)
