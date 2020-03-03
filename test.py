@@ -225,16 +225,19 @@ def test3():
     while not groups[2]._stopev:
         groups[2].update_items()
 
+def test(n):
+    while not groups[n]._stopev:
+        groups[n].update_items()
+
 if __name__ == '__main__':
     # create my_groups to update values later
     jobs = []
     try:
-        process = multiprocessing.Process(target=test1)
-        jobs.append(process)
-        process = multiprocessing.Process(target=test3)
-        jobs.append(process)
-        process = multiprocessing.Process(target=test2)
-        jobs.append(process)
+        no = 0
+        for g in groups:
+            process = multiprocessing.Process(target=test,args=(no,))
+            jobs.append(process)
+            no = no + 1
         for j in jobs:
                 j.start()
                 time.sleep(0.5)

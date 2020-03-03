@@ -165,6 +165,7 @@ def create_my_data_groups():
     return groups
 
 
+
 class TestService(win32serviceutil.ServiceFramework):
     _svc_name_ = "InfluxConnector4.0"
     _svc_display_name_ = "InfluxConnector4.0"
@@ -178,54 +179,41 @@ class TestService(win32serviceutil.ServiceFramework):
         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
         win32event.SetEvent(self.hWaitStop)
 
+    def test(self, n):
+        while not self.groups[n]._stopev:
+            self.groups[n].update_items()
+
+
     def SvcDoRun(self):
+        self.groups = create_my_data_groups()
         rc = None
+        jobs = []
         try:
-            while rc != win32event.WAIT_OBJECT_0:
+            no = 0
+            for g in self.groups:
+                self.process = multiprocessing.Process(target=self.test, args=(no,))
+                jobs.append(self.process)
+                no = no + 1
+            for j in jobs:
+                j.start()
+                time.sleep(0.5)
+        except Exception as e:
+            with open('C:\\InfluxDBService.log', 'a') as f:
+                f.write(str(e) + '\n')
+        finally:
+            for g in self.groups:
+                g.stop()
+            for j in jobs:
+                j.join()
+        try:
+             while rc != win32event.WAIT_OBJECT_0:
                 rc = win32event.WaitForSingleObject(self.hWaitStop, 5000)
         except Exception as e:
              with open('C:\\InfluxDBService.log', 'a') as f:
                     f.write(str(e) + '\n')
 
 
-groups = create_my_data_groups()
-
-def test1():
-    while not groups[0]._stopev:
-        groups[0].update_items()
-
-
-def test2():
-    while not groups[1]._stopev:
-        groups[1].update_items()
-
-def test3():
-    while not groups[2]._stopev:
-        groups[2].update_items()
 
 if __name__ == '__main__':
-    jobs = []
-    try:
-        process = multiprocessing.Process(target=test1)
-        jobs.append(process)
-        process = multiprocessing.Process(target=test3)
-        jobs.append(process)
-        process = multiprocessing.Process(target=test2)
-        jobs.append(process)
-        for j in jobs:
-                j.start()
-                time.sleep(0.5)
-    except Exception as e:
-        print(str(e))
-    finally:
-        for g in groups:
-            g.stop()
-        for j in jobs:
-            j.join()
 
-    if len(sys.argv) == 1:
-        servicemanager.Initialize()
-        servicemanager.PrepareToHostSingle(TestService)
-        servicemanager.StartServiceCtrlDispatcher()
-    else:
-        win32serviceutil.HandleCommandLine(TestService)
+    win32serviceutil.HandleCommandLine(TestService)
