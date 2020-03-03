@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 import copy
 import logging
 from datetime import datetime
+import threading
 import time
 import sys
 import random
@@ -17,6 +18,7 @@ try:
 except ImportError:
     import code
 
+    #interactive console to the opc ua server
     def embed():
         myvars = globals()
         myvars.update(locals())
@@ -26,35 +28,10 @@ except ImportError:
 from opcua import ua, uamethod, Server
 
 
-def config_to_opc_nodes(server):
-    #open xml config
-    tree = ET.parse('config.xml')
-    root = tree.getroot()
-    # namespace number, for nodeid creation
-    ns = 2
-    # get all configured plc
-    for p in root:  # PLC
-        # First a folder to organise our nodes and setup our own namespace
-        idx = server.register_namespace(p.text)
-        myfolder = server.nodes.objects.add_folder(idx, p.text)
-        # table for varaible grouping and updating
-        group = []
-        for data in p:
-            dev = myfolder.add_object(idx, data[3].text)
-            var1 = dev.add_variable(idx, "PLC", p.text)
-            var2 = dev.add_variable(idx, "Type", data[0].text)
-            var4 = dev.add_variable(idx, "Address", data[2].text)
-            nodeid = "ns={0};s={1}".format(ns,data[3].text)
-            var6 = dev.add_variable(nodeid, "Value", 0.0)
-            var6.set_writable()
-            group.append(var6)
-        #next plc, next namespace -> increment ns
-        ns = ns + 1
-
-
+#get variables from configuration and setup server
 # create my_data objects, group by PLC
 def create_my_data_groups(server):
-    global var2
+    # open xml config
     tree = ET.parse('config.xml')
     root = tree.getroot()
     # namespace number, for nodeid creation
@@ -119,20 +96,25 @@ def multiply(parent, x, y):
     return x * y
 
 #simple variable updater (not for multiprocessing)
-class VarUpdater():
-    def __init__(self, vars):
+class VarUpdater(threading.Thread):
+    def __init__(self, server, pipe):
+        threading.Thread.__init__(self)
         self._stopev = False
-        self.vars = vars
+        self.server = server
+        self.pipe = pipe
 
     def stop(self):
         self._stopev = True
 
-    async def run(self):
+    #recive data through pipe and update server variable
+    def run(self):
         while not self._stopev:
-            for v in self.vars:
-                v.set_value(random.uniform(0.0,100.0))
-                #print(v)
-                await asyncio.sleep(0.05)
+            var = self.pipe.recv()
+            val = self.pipe.recv()
+            opc_var = server.get_node(var)
+            opc_var.set_value(val)
+            print(var)
+
 
 
 # optional: setup logging
@@ -153,15 +135,18 @@ server.set_security_policy([
 groups = create_my_data_groups(server)
 
 
-def test(sd):
-    groups[0].sim_update(sd)
+def data_process_group(no, pipe):
+    groups[no].sim_update(pipe)
+
+def update_server_vars(pipe , server):
+    while True:
+        var = pipe.recv()
+        val = pipe.recv()
+        opc_var = server.get_node(var)
+        opc_var.set_value(val)
 
 
 if __name__ == "__main__":
-
-    # create manager and sharable varaible for multiprocessing
-    manager = multiprocessing.Manager()
-    sharable_dict = manager.dict()
 
     # creating a default event object
     # The event object automatically will have members for all events properties
@@ -172,26 +157,31 @@ if __name__ == "__main__":
     # starting!
     server.start()
 
+
     print("Available loggers are: ", logging.Logger.manager.loggerDict.keys())
     jobs = []
+    vups = []
     try:
         # create variable updater for each group and start it
+        no = 0
         for g in groups:
-            process = multiprocessing.Process(target=test, args=(sharable_dict,)) # blokada
+            pipe1, pipe2 = multiprocessing.Pipe()
+            process = multiprocessing.Process(target=data_process_group, args=(no, pipe1,))
             jobs.append(process)
+            vup = VarUpdater(server,pipe2).start()
+            vups.append(vup)
+            no = no + 1
         for j in jobs:
             j.start()
-            print(j.get())
-        embed()
-        time.sleep(10)
-        groups[0].stop()
+        #embed()
+    except Exception as e:
+        print(str(e))
     finally:
         # stop all variable updaters
         for g in groups:
             g.stop()
         for j in jobs:
             j.join()
+        for v in vups:
+            v.stop()
         server.stop()
-
-    for d in sharable_dict.keys():
-        print(d, sharable_dict[d])
