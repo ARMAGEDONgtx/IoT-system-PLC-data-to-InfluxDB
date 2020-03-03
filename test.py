@@ -99,7 +99,7 @@ class my_group():
                         self.m_lock.acquire()
                         result = self.plc.read_area(eval(data.m_area), 0, eval(address[0]), eval(data.m_type))
                         self.m_lock.release()
-                        if eval(data.m_type) == S7WLReal:
+                        if eval(data.m_type) == S7WLReal
                             value = get_real(result, 0)
                         elif eval(data.m_type) == S7WLDWord:
                             value = get_dword(result, 0)
@@ -225,16 +225,19 @@ def test3():
     while not groups[2]._stopev:
         groups[2].update_items()
 
+def test(n):
+    while not groups[n]._stopev:
+        groups[n].update_items()
+
 if __name__ == '__main__':
     # create my_groups to update values later
     jobs = []
     try:
-        process = multiprocessing.Process(target=test1)
-        jobs.append(process)
-        process = multiprocessing.Process(target=test3)
-        jobs.append(process)
-        process = multiprocessing.Process(target=test2)
-        jobs.append(process)
+        no = 0
+        for g in groups:
+            process = multiprocessing.Process(target=test,args=(no,))
+            jobs.append(process)
+            no = no + 1
         for j in jobs:
                 j.start()
                 time.sleep(0.5)
