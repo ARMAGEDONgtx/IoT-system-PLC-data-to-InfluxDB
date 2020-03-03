@@ -30,9 +30,6 @@ class my_group():
         self._stopev = False
         self.m_data_list= data_list
         self.plc = snap7.client.Client()
-        #create client to opcua server - in multithreading it's necessery to update this way
-        #self.ua_client = opcua.Client("opc.tcp://localhost:4840/freeopcua/server/")
-        #self.ua_client.connect()
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
             #self.plc.connect(self.m_data_list[0].m_address, 0, self.m_data_list[0].m_slot)
@@ -103,15 +100,14 @@ class my_group():
             if len(self.m_data_list) > 0:
                 self.plc.connect(self.m_data_list[0].m_address, 0, self.m_data_list[0].m_slot)
 
-    def sim_update(self):
-        pass
-       # while(self._stopev != True):
-           # for d in self.m_data_list:
-               # d.value = random.uniform(0.0,100.0)
-               # if d.m_opcua_var is not None:
-                    #d.show()
-                    #var = self.ua_client.get_node(d.m_opcua_var)
-                    #var.set_value(d.value)
+    def sim_update(self, dict):
+        while(self._stopev != True):
+            for d in self.m_data_list:
+                d.value = random.uniform(0.0,100.0)
+                d.show()
+                if d.m_opcua_var is not None:
+                    dict[d.m_opcua_var] = d.value
+
 
 
 # Function to extract all the numbers from the given string

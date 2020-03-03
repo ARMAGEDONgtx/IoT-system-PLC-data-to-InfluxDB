@@ -118,7 +118,7 @@ def multiply(parent, x, y):
     print("multiply method call with parameters: ", x, y)
     return x * y
 
-
+#simple variable updater (not for multiprocessing)
 class VarUpdater():
     def __init__(self, vars):
         self._stopev = False
@@ -148,39 +148,43 @@ server.set_security_policy([
         ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
         ua.SecurityPolicyType.Basic256Sha256_Sign])
 
-# creating a default event object
-# The event object automatically will have members for all events properties
-# you probably want to create a custom event type, see other examples
-myevgen = server.get_event_generator()
-myevgen.event.Severity = 300
-
-# starting!
-server.start()
-
 # Initialize OPC UA server with variables
 #create my_groups to update values later
 groups = create_my_data_groups(server)
 
 
-def test():
-    groups[0].sim_update()
-
+def test(sd):
+    groups[0].sim_update(sd)
 
 
 if __name__ == "__main__":
 
+    # create manager and sharable varaible for multiprocessing
+    manager = multiprocessing.Manager()
+    sharable_dict = manager.dict()
+
+    # creating a default event object
+    # The event object automatically will have members for all events properties
+    # you probably want to create a custom event type, see other examples
+    myevgen = server.get_event_generator()
+    myevgen.event.Severity = 300
+
+    # starting!
+    server.start()
+
     print("Available loggers are: ", logging.Logger.manager.loggerDict.keys())
     jobs = []
-    #groups[1].sim_update()
     try:
         # create variable updater for each group and start it
         for g in groups:
-            process = multiprocessing.Process(target=test) # blokada
+            process = multiprocessing.Process(target=test, args=(sharable_dict,)) # blokada
             jobs.append(process)
         for j in jobs:
             j.start()
             print(j.get())
         embed()
+        time.sleep(10)
+        groups[0].stop()
     finally:
         # stop all variable updaters
         for g in groups:
@@ -188,3 +192,6 @@ if __name__ == "__main__":
         for j in jobs:
             j.join()
         server.stop()
+
+    for d in sharable_dict.keys():
+        print(d, sharable_dict[d])
