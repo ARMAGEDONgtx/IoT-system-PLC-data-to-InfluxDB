@@ -213,7 +213,7 @@ while(1):
             window.find_element('AREA_EDIT').update(data_plc[1])
             window.find_element('ADR_EDIT').update(data_plc[2])
             window.find_element('ALIAS_EDIT').update(data_plc[3])
-            window.find_element('ACTIVATE_EDIT').update(bool(data_plc[4]))
+            window.find_element('ACTIVATE_EDIT').update(eval(data_plc[4]))
         else:
             window.find_element('TYPE_EDIT').update("")
             window.find_element('AREA_EDIT').update("")
