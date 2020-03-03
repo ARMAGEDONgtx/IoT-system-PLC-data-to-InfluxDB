@@ -180,7 +180,7 @@ class TestService(win32serviceutil.ServiceFramework):
             except Exception as e:
                 with open('C:\\InfluxDBService.log', 'a') as f:
                     f.write(str(e) + '\n')
-            rc = win32event.WaitForSingleObject(self.hWaitStop, 5000)
+            rc = win32event.WaitForSingleObject(self.hWaitStop, 100)
 
 
 if __name__ == '__main__':
