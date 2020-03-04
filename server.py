@@ -31,6 +31,7 @@ from opcua import ua, uamethod, Server
 #get variables from configuration and setup server
 # create my_data objects, group by PLC
 def create_my_data_groups(server):
+    my_lock = multiprocessing.Lock()
     # open xml config
     tree = ET.parse('config.xml')
     root = tree.getroot()
@@ -64,7 +65,7 @@ def create_my_data_groups(server):
                 my_list.append(m)
         # next plc, next namespace -> increment ns
         ns = ns + 1
-        group = my_data.my_group(my_list)
+        group = my_data.my_group(my_list,my_lock)
         groups.append(group)
     return groups
 
@@ -136,7 +137,7 @@ groups = create_my_data_groups(server)
 
 
 def data_process_group(no, pipe):
-    groups[no].sim_update(pipe)
+    groups[no].update_items(pipe)
 
 def update_server_vars(pipe , server):
     while True:
@@ -173,6 +174,7 @@ if __name__ == "__main__":
             no = no + 1
         for j in jobs:
             j.start()
+            time.sleep(0.5)
         #embed()
     except Exception as e:
         print(str(e))

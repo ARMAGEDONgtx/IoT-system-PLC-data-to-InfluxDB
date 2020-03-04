@@ -27,14 +27,15 @@ class my_data():
 
 
 class my_group():
-    def __init__(self, data_list):
+    def __init__(self, data_list, lock):
         self._stopev = False
+        self.lock = lock
         self.m_data_list= data_list
         self.plc = snap7.client.Client()
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
-            #self.plc.connect(self.m_data_list[0].m_address, 0, self.m_data_list[0].m_slot)
-            pass
+            self.plc.connect(self.m_data_list[0].m_plc, 0, self.m_data_list[0].m_slot)
+            #pass
 
     #assure to disconnect
     def __del__(self):
@@ -91,7 +92,7 @@ class my_group():
                         data.m_value = value
                         if data.m_opcua_var is not None:
                             pipe.send(data.m_opcua_var)
-                            pipe.send(data.value)
+                            pipe.send(data.m_value)
         except Exception as e:
             print(str(e))
             # error - try recconecting to plc
