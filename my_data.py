@@ -114,4 +114,4 @@ def getNumbers(str):
     array = re.findall(r'[0-9]+', str)
     return array
 
-
+print(str(type(4)))

@@ -103,7 +103,8 @@ class my_group():
                     json_body1 = create_my_json(data.m_plc, data.m_alias, value)
                     self.client.write_points(json_body1)
         except Exception as e:
-            print(str(e))
+            with open('C:\\InfluxDBService.log', 'a') as f:
+                f.write(str(e) + '\n')
             # error - try recconecting to plc
             self.plc.disconnect()
             # assure, that there is some data in list
@@ -124,7 +125,7 @@ def create_my_json(mes, name, value):
                 "name": name
             },
             "fields": {
-                "Float_value": value
+                str(type(value)): value
             }
         }
         ]
