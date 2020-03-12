@@ -100,7 +100,7 @@ class my_group():
                     self.client.write_points(json_body1)
                     print(value)
         except Exception as e:
-            with open('C:\\InfluxDBService.log', 'a') as f:
+            with open('/home/poziadmin/Documents/InfluxDBService.log', 'a') as f:
                 f.write(str(e) + '\n')
             # error - try recconecting to plc
             self.plc.disconnect()
