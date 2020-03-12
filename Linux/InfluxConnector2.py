@@ -5,12 +5,8 @@ import time
 from snap7.util import *
 from snap7.snap7types import *
 import influxdb
-import servicemanager
 import socket
 import sys
-import win32event
-import win32service
-import win32serviceutil
 import multiprocessing
 
 
@@ -102,6 +98,7 @@ class my_group():
                     # send data do InfluxDB
                     json_body1 = create_my_json(data.m_plc, data.m_alias, value)
                     self.client.write_points(json_body1)
+                    print(value)
         except Exception as e:
             with open('C:\\InfluxDBService.log', 'a') as f:
                 f.write(str(e) + '\n')
@@ -134,7 +131,7 @@ def create_my_json(mes, name, value):
 
 # create my_data objects, group by PLC
 def create_my_data_groups():
-    tree = ET.parse('C:\config.xml')
+    tree = ET.parse('/home/poziadmin/Documents/Python_projects/Linux/config.xml')
     root = tree.getroot()
     groups = []
     # get all configured plc
@@ -153,41 +150,12 @@ def create_my_data_groups():
         groups.append(group)
     return groups
 
-class TestService(win32serviceutil.ServiceFramework):
-    _svc_name_ = "InfluxConnector3.0"
-    _svc_display_name_ = "InfluxConnector3.0"
 
-    def __init__(self, args):
-        win32serviceutil.ServiceFramework.__init__(self, args)
-        self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
-        socket.setdefaulttimeout(60)
+# create my_groups to update values later
+groups = create_my_data_groups()
 
-    def SvcStop(self):
-        self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
-        win32event.SetEvent(self.hWaitStop)
-
-    def SvcDoRun(self):
-        rc = None
-        try:
-            # create my_groups to update values later
-            groups = create_my_data_groups()
-        except Exception as e:
-            with open('C:\\InfluxDBService.log', 'a') as f:
-                f.write(str(e)+'\n')
-        while rc != win32event.WAIT_OBJECT_0:
-            try:
-                for g in groups:
-                    g.update_items()
-            except Exception as e:
-                with open('C:\\InfluxDBService.log', 'a') as f:
-                    f.write(str(e) + '\n')
-            rc = win32event.WaitForSingleObject(self.hWaitStop, 10)
+while True:
+    for g in groups:
+        g.update_items()
 
 
-if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        servicemanager.Initialize()
-        servicemanager.PrepareToHostSingle(TestService)
-        servicemanager.StartServiceCtrlDispatcher()
-    else:
-        win32serviceutil.HandleCommandLine(TestService)
