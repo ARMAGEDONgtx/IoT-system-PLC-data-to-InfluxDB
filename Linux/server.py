@@ -2,12 +2,14 @@ import xml.etree.ElementTree as ET
 import copy
 import logging
 from datetime import datetime
+import threading
 import time
 import sys
 import random
 import asyncio
 import my_data
 import multiprocessing
+import opcua
 
 sys.path.insert(0, "..")
 
@@ -16,6 +18,7 @@ try:
 except ImportError:
     import code
 
+    #interactive console to the opc ua server
     def embed():
         myvars = globals()
         myvars.update(locals())
@@ -25,35 +28,11 @@ except ImportError:
 from opcua import ua, uamethod, Server
 
 
-def config_to_opc_nodes(server):
-    #open xml config
-    tree = ET.parse('config.xml')
-    root = tree.getroot()
-    # namespace number, for nodeid creation
-    ns = 2
-    # get all configured plc
-    for p in root:  # PLC
-        # First a folder to organise our nodes and setup our own namespace
-        idx = server.register_namespace(p.text)
-        myfolder = server.nodes.objects.add_folder(idx, p.text)
-        # table for varaible grouping and updating
-        group = []
-        for data in p:
-            dev = myfolder.add_object(idx, data[3].text)
-            var1 = dev.add_variable(idx, "PLC", p.text)
-            var2 = dev.add_variable(idx, "Type", data[0].text)
-            var4 = dev.add_variable(idx, "Address", data[2].text)
-            nodeid = "ns={0};s={1}".format(ns,data[3].text)
-            var6 = dev.add_variable(nodeid, "Value", 0.0)
-            var6.set_writable()
-            group.append(var6)
-        #next plc, next namespace -> increment ns
-        ns = ns + 1
-
-var2 = None
+#get variables from configuration and setup server
 # create my_data objects, group by PLC
 def create_my_data_groups(server):
-    global var2
+    my_lock = multiprocessing.Lock()
+    # open xml config
     tree = ET.parse('config.xml')
     root = tree.getroot()
     # namespace number, for nodeid creation
@@ -80,15 +59,14 @@ def create_my_data_groups(server):
             if sl is None:
                 sl = "1"
             m = my_data.my_data(p.text, data[0].text, data[1].text, data[2].text, data[3].text, data[4].text, sl)
-            #add reference to opc ua server variable
-            m.m_opcua_var = var1
+            #add nodid - will be updated in another process by nodeid
+            m.m_opcua_var = nodeid
             if eval(data[4].text):
                 my_list.append(m)
         # next plc, next namespace -> increment ns
         ns = ns + 1
-        group = my_data.my_group(my_list)
+        group = my_data.my_group(my_list,my_lock)
         groups.append(group)
-        var2 = var1
     return groups
 
 
@@ -118,47 +96,58 @@ def multiply(parent, x, y):
     print("multiply method call with parameters: ", x, y)
     return x * y
 
-
-class VarUpdater():
-    def __init__(self, vars):
+#simple variable updater (not for multiprocessing)
+class VarUpdater(threading.Thread):
+    def __init__(self, server, pipe):
+        threading.Thread.__init__(self)
         self._stopev = False
-        self.vars = vars
+        self.server = server
+        self.pipe = pipe
 
     def stop(self):
         self._stopev = True
 
-    async def run(self):
+    #recive data through pipe and update server variable
+    def run(self):
         while not self._stopev:
-            for v in self.vars:
-                v.set_value(random.uniform(0.0,100.0))
-                #print(v)
-                await asyncio.sleep(0.05)
-
-def test(varsa):
-    global var2
-    while True:
-        print('test')
-        varsa.set_value(1.0) # na tym gownie sie blokuje w multiprocessing
+            var = self.pipe.recv()
+            val = self.pipe.recv()
+            opc_var = server.get_node(var)
+            opc_var.set_value(val)
+            print(var)
 
 
 
-if __name__ == "__main__":
-    # optional: setup logging
-    logging.basicConfig(level=logging.WARN)
-    # now setup our server
-    server = Server()
-    # server.disable_clock()
-    server.set_endpoint("opc.tcp://0.0.0.0:4840/freeopcua/server/")
-    server.set_server_name("M.W opcua-influxdb")
-    # set all possible endpoint policies for clients to connect through
-    server.set_security_policy([
+# optional: setup logging
+logging.basicConfig(level=logging.WARN)
+# now setup our server
+server = Server()
+# server.disable_clock()
+server.set_endpoint("opc.tcp://0.0.0.0:4840/freeopcua/server/")
+server.set_server_name("M.W opcua-influxdb")
+# set all possible endpoint policies for clients to connect through
+server.set_security_policy([
         ua.SecurityPolicyType.NoSecurity,
         ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
         ua.SecurityPolicyType.Basic256Sha256_Sign])
 
-    # Initialize OPC UA server with variables
-    #create my_groups to update values later
-    groups = create_my_data_groups(server)
+# Initialize OPC UA server with variables
+#create my_groups to update values later
+groups = create_my_data_groups(server)
+
+
+def data_process_group(no, pipe):
+    groups[no].update_items(pipe)
+
+def update_server_vars(pipe , server):
+    while True:
+        var = pipe.recv()
+        val = pipe.recv()
+        opc_var = server.get_node(var)
+        opc_var.set_value(val)
+
+
+if __name__ == "__main__":
 
     # creating a default event object
     # The event object automatically will have members for all events properties
@@ -168,22 +157,33 @@ if __name__ == "__main__":
 
     # starting!
     server.start()
+
+
     print("Available loggers are: ", logging.Logger.manager.loggerDict.keys())
     jobs = []
-    multiprocessing.set_start_method('spawn')
+    vups = []
     try:
         # create variable updater for each group and start it
+        no = 0
         for g in groups:
-            process = multiprocessing.Process(target=test,args=(g.m_data_list[0].m_opcua_var,)) # blokada
+            pipe1, pipe2 = multiprocessing.Pipe()
+            process = multiprocessing.Process(target=data_process_group, args=(no, pipe1,))
             jobs.append(process)
+            vup = VarUpdater(server,pipe2).start()
+            vups.append(vup)
+            no = no + 1
         for j in jobs:
             j.start()
-            print(j.get())
-        embed()
+            time.sleep(0.5)
+        #embed()
+    except Exception as e:
+        print(str(e))
     finally:
         # stop all variable updaters
         for g in groups:
             g.stop()
         for j in jobs:
             j.join()
+        for v in vups:
+            v.stop()
         server.stop()

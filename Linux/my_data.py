@@ -5,21 +5,20 @@ import snap7
 import time
 from snap7.util import *
 from snap7.snap7types import *
-import asyncio
 import random
-
+import multiprocessing
 
 class my_data():
-    def __init__(self, plc , type , area , address, alias , active, slot, opcua_var = None):
+    def __init__(self, plc , type , area , address, alias , active, slot, opcua_var_id = None):
         self.m_plc = plc
-        self.m_type = type
-        self.m_area = area
+        self.m_type = eval(type)
+        self.m_area = eval(area)
         self.m_address = address
         self.m_alias = alias
         self.m_active = active
-        self.m_slot = slot
+        self.m_slot = eval(slot)
         self.m_value = 0.0
-        self.m_opcua_var = opcua_var
+        self.m_opcua_var = opcua_var_id
 
     def show(self):
         print("PLC IP: {0}, TYPE: {1}, AREA: {2}, ADDRESS: {3}, ALIAS: {4}, ACTIVE: {5}".format(
@@ -28,18 +27,20 @@ class my_data():
 
 
 class my_group():
-    def __init__(self, data_list):
+    def __init__(self, data_list, lock):
         self._stopev = False
+        self.lock = lock
         self.m_data_list= data_list
         self.plc = snap7.client.Client()
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
-            #self.plc.connect(self.m_data_list[0].m_address, 0, self.m_data_list[0].m_slot)
-            pass
+            self.plc.connect(self.m_data_list[0].m_plc, 0, self.m_data_list[0].m_slot)
+            #pass
 
     #assure to disconnect
     def __del__(self):
         self.plc.disconnect()
+        #self.ua_client.disconnect()
 
     def stop(self):
         self._stopev = True
@@ -51,7 +52,7 @@ class my_group():
         self.m_data_list = self.m_data_list + data_list
 
     # TODO: async
-    def update_items(self):
+    def update_items(self, pipe):
         try:
             #continous function
             while(self._stopev != True):
@@ -61,38 +62,37 @@ class my_group():
                     address = getNumbers(data.m_address)
                     value = None
                     if len(address) > 0:  # assure there was some address
-                        if eval(data.m_area) == 132 and len(address) >= 2:  # DB
-                            result = self.plc.read_area(eval(data.m_area), eval(address[0]), eval(address[1]),
-                                                         eval(data.m_type))
-                            if eval(data.m_type) == S7WLReal:
+                        if data.m_area == 132 and len(address) >= 2:  # DB
+                            result = self.plc.read_area(data.m_area, eval(address[0]), eval(address[1]), data.m_type)
+                            if data.m_type == S7WLReal:
                                 value = get_real(result, 0)
-                            elif eval(data.m_type) == S7WLDWord:
+                            elif data.m_type == S7WLDWord:
                                 value = get_dword(result, 0)
-                            elif eval(data.m_type) == S7WLWord:
+                            elif data.m_type == S7WLWord:
                                 value = get_int(result, 0)
-                            elif eval(data.m_type) == S7WLByte:
+                            elif data.m_type == S7WLByte:
                                 value = get_int(result, 0)
-                            elif eval(data.m_type) == S7WLBit and len(address) == 3:
+                            elif data.m_type == S7WLBit and len(address) == 3:
                                 value = int(get_bool(result, 0, eval(address[2])))
-                        elif (eval(data.m_area) == S7AreaPA or eval(data.m_area) == S7AreaPE or eval(
-                                data.m_area) == S7AreaMK) and len(address) >= 1:  # Memory / In Out
-                            result = self.plc.read_area(eval(data.m_area), 0, eval(address[0]), eval(data.m_type))
-                            if eval(data.m_type) == S7WLReal:
+                        elif (data.m_area == S7AreaPA or data.m_area == S7AreaPE or
+                                data.m_area == S7AreaMK) and len(address) >= 1:  # Memory / In Out
+                            result = self.plc.read_area(data.m_area, 0, eval(address[0]), data.m_type)
+                            if data.m_type == S7WLReal:
                                 value = get_real(result, 0)
-                            elif eval(data.m_type) == S7WLDWord:
+                            elif data.m_type == S7WLDWord:
                                 value = get_dword(result, 0)
-                            elif eval(data.m_type) == S7WLWord:
+                            elif data.m_type == S7WLWord:
                                 value = get_int(result, 0)
-                            elif eval(data.m_type) == S7WLByte:
+                            elif data.m_type == S7WLByte:
                                 value = get_int(result, 0)
-                            elif eval(data.m_type) == S7WLBit and len(address) == 2:
+                            elif data.m_type == S7WLBit and len(address) == 2:
                                 value = int(get_bool(result, 0, eval(address[1])))
                     #update value in every my_data object
                     if value is not None:
                         data.m_value = value
-                        #if there is reference to opcua var update it also
                         if data.m_opcua_var is not None:
-                            data.m_opcua_var.set_value(value)
+                            pipe.send(data.m_opcua_var)
+                            pipe.send(data.m_value)
         except Exception as e:
             print(str(e))
             # error - try recconecting to plc
@@ -101,12 +101,14 @@ class my_group():
             if len(self.m_data_list) > 0:
                 self.plc.connect(self.m_data_list[0].m_address, 0, self.m_data_list[0].m_slot)
 
-    def sim_update(self):
+    def sim_update(self, pipe):
         while(self._stopev != True):
             for d in self.m_data_list:
+                d.value = random.uniform(0.0,100.0)
+                d.show()
                 if d.m_opcua_var is not None:
-                    d.show()
-                    d.m_opcua_var.set_value(random.uniform(0.0,100.0))
+                    pipe.send(d.m_opcua_var)
+                    pipe.send(d.value)
 
 
 # Function to extract all the numbers from the given string
@@ -114,4 +116,4 @@ def getNumbers(str):
     array = re.findall(r'[0-9]+', str)
     return array
 
-print(str(type(4)))
+

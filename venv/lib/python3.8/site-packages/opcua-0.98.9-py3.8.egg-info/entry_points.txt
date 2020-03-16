@@ -1,0 +1,12 @@
+[console_scripts]
+uabrowse = opcua.tools:uals
+uacall = opcua.tools:uacall
+uaclient = opcua.tools:uaclient
+uadiscover = opcua.tools:uadiscover
+uahistoryread = opcua.tools:uahistoryread
+uals = opcua.tools:uals
+uaread = opcua.tools:uaread
+uaserver = opcua.tools:uaserver
+uasubscribe = opcua.tools:uasubscribe
+uawrite = opcua.tools:uawrite
+

@@ -29,7 +29,8 @@ class my_data():
 
 
 class my_group():
-    def __init__(self, data_list):
+    def __init__(self, data_list, lock):
+        self.m_lock = lock
         self._stopev = False
         self.m_data_list= data_list
         self.plc = snap7.client.Client()
@@ -42,7 +43,9 @@ class my_group():
         self.client.create_database(self.db_name)
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
+            self.m_lock.acquire()
             self.plc.connect(self.m_data_list[0].m_plc, 0, eval(self.m_data_list[0].m_slot))
+            self.m_lock.release()
 
     #assure to disconnect
     def __del__(self):
@@ -67,8 +70,10 @@ class my_group():
                 value = None
                 if len(address) > 0:  # assure there was some address
                     if eval(data.m_area) == 132 and len(address) >= 2:  # DB
+                        #self.m_lock.acquire()
                         result = self.plc.read_area(eval(data.m_area), eval(address[0]), eval(address[1]),
                                                          eval(data.m_type))
+                        #self.m_lock.release()
                         if eval(data.m_type) == S7WLReal:
                             value = get_real(result, 0)
                         elif eval(data.m_type) == S7WLDWord:
@@ -81,7 +86,9 @@ class my_group():
                                 value = int(get_bool(result, 0, eval(address[2])))
                     elif (eval(data.m_area) == S7AreaPA or eval(data.m_area) == S7AreaPE or eval(
                                 data.m_area) == S7AreaMK) and len(address) >= 1:  # Memory / In Out
+                        #self.m_lock.acquire()
                         result = self.plc.read_area(eval(data.m_area), 0, eval(address[0]), eval(data.m_type))
+                        #self.m_lock.release()
                         if eval(data.m_type) == S7WLReal:
                             value = get_real(result, 0)
                         elif eval(data.m_type) == S7WLDWord:
@@ -98,15 +105,16 @@ class my_group():
                     # send data do InfluxDB
                     json_body1 = create_my_json(data.m_plc, data.m_alias, value)
                     self.client.write_points(json_body1)
-                    print(value)
         except Exception as e:
-            with open('/home/poziadmin/Documents/InfluxDBService.log', 'a') as f:
+            self.m_lock.acquire()
+            with open('/home/poziadmin/Documents/Python_projects/Linux/InfluxDBService.log', 'a') as f:
                 f.write(str(e) + '\n')
             # error - try recconecting to plc
             self.plc.disconnect()
             # assure, that there is some data in list
             if len(self.m_data_list) > 0:
                 self.plc.connect(self.m_data_list[0].m_plc, 0, eval(self.m_data_list[0].m_slot))
+            self.m_lock.release()
 
 
 # Function to extract all the numbers from the given string
@@ -131,6 +139,8 @@ def create_my_json(mes, name, value):
 
 # create my_data objects, group by PLC
 def create_my_data_groups():
+    # lock for threading
+    my_lock = multiprocessing.Lock()
     tree = ET.parse('/home/poziadmin/Documents/Python_projects/Linux/config.xml')
     root = tree.getroot()
     groups = []
@@ -146,16 +156,35 @@ def create_my_data_groups():
             #add reference to opc ua server variable
             if eval(data[4].text):
                 my_list.append(m)
-        group = my_group(my_list)
+        group = my_group(my_list,my_lock)
         groups.append(group)
     return groups
 
 
-# create my_groups to update values later
+
+def proc(group):
+    while not group._stopev:
+        group.update_items()
+
+
+
 groups = create_my_data_groups()
-
-while True:
+jobs = []
+try:
+    no = 0
     for g in groups:
-        g.update_items()
-
-
+        process = multiprocessing.Process(target=proc, args=(g,))
+        jobs.append(process)
+        no = no + 1
+    for j in jobs:
+        j.start()
+        time.sleep(0.5)
+except Exception as e:
+    print(e)
+    with open('/home/poziadmin/Documents/Python_projects/Linux/InfluxDBService.log', 'a') as f:
+        f.write(str(e) + '\n')
+    print('stopped')
+    for g in groups:
+        g.stop()
+    for j in jobs:
+        j.join()
