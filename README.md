@@ -5,7 +5,7 @@ Fetching data from plcs (Siemens S7-300/400/1200/1500) and sending it do InfluxD
 For polish users you can read some paper we made about it (just basic explanation and some performance tests) -> https://www.overleaf.com/read/wfqmzmtnbmcb
 
 Structure:
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](img/Structure.png?raw=true "Structure")
 
 
 # Setup steps
