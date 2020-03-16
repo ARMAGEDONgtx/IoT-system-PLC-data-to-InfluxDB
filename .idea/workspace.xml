@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbbb0fd3-39d8-44d4-b962-d803594ef800" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="linux async config" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,11 +10,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="169" lean-forward="true" selection-start-line="169" selection-end-line="169" />
+            <state relative-caret-position="146">
+              <caret line="183" column="47" lean-forward="true" selection-start-line="183" selection-start-column="47" selection-end-line="183" selection-end-column="47" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -27,17 +25,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Linux/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2463">
-              <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+            <state relative-caret-position="120">
+              <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Linux/my_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="109" column="22" selection-start-line="109" selection-start-column="22" selection-end-line="109" selection-end-column="22" />
+            <state relative-caret-position="-3">
+              <caret line="97" column="45" selection-start-line="97" selection-start-column="45" selection-end-line="97" selection-end-column="45" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -89,11 +90,6 @@
             <path>
               <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
               <item name="Python_projects" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Python_projects" type="462c0819:PsiDirectoryNode" />
-              <item name="ConfigApp" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
@@ -259,6 +255,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="27" width="1362" height="742" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22771536" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -270,9 +267,9 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4988764" weight="0.32941177" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="7" sideWeight="0.49812734" visible="true" weight="0.32941177" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4988764" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="9" sideWeight="0.5026217" side_tool="true" visible="true" weight="0.32941177" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50187266" side_tool="true" visible="true" weight="0.32941177" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49962547" weight="0.32941177" />
       <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -322,16 +319,7 @@
     <entry file="file://$PROJECT_DIR$/Linux/test.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Windows/InfluxConnector2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="216" selection-start-line="216" selection-end-line="216" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Windows/InfluxConnector2.py" />
     <entry file="file:///usr/local/lib/python3.8/email/feedparser.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="498">
@@ -345,8 +333,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="169" lean-forward="true" selection-start-line="169" selection-end-line="169" />
+        <state relative-caret-position="146">
+          <caret line="183" column="47" lean-forward="true" selection-start-line="183" selection-start-column="47" selection-end-line="183" selection-end-column="47" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
@@ -355,15 +343,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Linux/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2463">
-          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        <state relative-caret-position="120">
+          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Linux/my_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="109" column="22" selection-start-line="109" selection-start-column="22" selection-end-line="109" selection-end-column="22" />
+        <state relative-caret-position="-3">
+          <caret line="97" column="45" selection-start-line="97" selection-start-column="45" selection-end-line="97" selection-end-column="45" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
