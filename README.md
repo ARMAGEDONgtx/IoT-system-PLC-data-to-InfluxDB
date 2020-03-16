@@ -1,5 +1,12 @@
 # PLC_to_InfluxDB
-fetching data from plcs (Siemens S7-300/400/1200/1500) and sending it do InfluxDB, BigData like data storing
+
+Fetching data from plcs (Siemens S7-300/400/1200/1500) and sending it do InfluxDB, BigData like storage.
+
+For polish users you can read some paper we made about it (just basic explanation and some performance tests) -> https://www.overleaf.com/read/wfqmzmtnbmcb
+
+Structure:
+![Alt text](relative/path/to/img.jpg?raw=true "Title")
+
 
 # Setup steps
 
