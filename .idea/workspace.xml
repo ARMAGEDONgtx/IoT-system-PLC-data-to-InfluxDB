@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="linux async config" />
+    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -9,44 +9,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="183" column="47" lean-forward="true" selection-start-line="183" selection-start-column="47" selection-end-line="183" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Linux/server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Linux/my_data.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3">
-              <caret line="97" column="45" selection-start-line="97" selection-start-column="45" selection-end-line="97" selection-end-column="45" />
-              <folding>
-                <element signature="e#0#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -57,24 +20,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="master" />
-      </map>
-    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Linux/InfluxConnector2.py" />
+        <option value="$PROJECT_DIR$/venv/lib/python3.8/site-packages/snap7/common.py" />
       </list>
     </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="135" />
-    <option name="y" value="49" />
-    <option name="width" value="990" />
-    <option name="height" value="701" />
   </component>
   <component name="ProjectId" id="1XwXnt13hTmkKYpAVG2ieAbWvvi" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -113,8 +66,6 @@
       <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/ConfigApp" />
-      <recent name="$PROJECT_DIR$" />
       <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC" />
       <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC\venv" />
     </key>
@@ -131,8 +82,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.InfluxConnector2">
-    <configuration name="InfluxConnector2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.ConfigApp">
+    <configuration name="ConfigApp" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="OPC" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -140,11 +91,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Linux" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ConfigApp" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Linux/InfluxConnector2.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ConfigApp/ConfigApp.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -218,7 +169,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.InfluxConnector2" />
+        <item itemvalue="Python.ConfigApp" />
         <item itemvalue="Python.server" />
         <item itemvalue="Python.my_data" />
         <item itemvalue="Python.tests" />
@@ -236,38 +187,22 @@
       <option name="presentableId" value="Default" />
       <updated>1581958300319</updated>
     </task>
-    <task id="LOCAL-00001" summary="linux async">
-      <created>1584357818263</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1584357818263</updated>
-    </task>
-    <task id="LOCAL-00002" summary="linux async config">
-      <created>1584358177158</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1584358177159</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="27" width="1362" height="742" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22771536" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22771536" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32941177" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4973783" weight="0.3277311" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4973783" visible="true" weight="0.3277311" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="7" sideWeight="0.49812734" visible="true" weight="0.32941177" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49962547" weight="0.32941177" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4988764" weight="0.32941177" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50187266" side_tool="true" visible="true" weight="0.32941177" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49962547" weight="0.32941177" />
@@ -310,53 +245,30 @@
       </map>
     </option>
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="linux async" />
-    <MESSAGE value="linux async config" />
-    <option name="LAST_COMMIT_MESSAGE" value="linux async config" />
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Linux/test.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Windows/InfluxConnector2.py" />
-    <entry file="file:///usr/local/lib/python3.8/email/feedparser.py">
+    <entry file="file://$PROJECT_DIR$/ConfigApp/ConfigApp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="189" column="32" selection-start-line="189" selection-start-column="32" selection-end-line="189" selection-end-column="32" />
+        <state relative-caret-position="135">
+          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Linux/InfluxDBService.log" />
-    <entry file="file://$PROJECT_DIR$/Linux/config.xml">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="183" column="47" lean-forward="true" selection-start-line="183" selection-start-column="47" selection-end-line="183" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-1995">
+          <caret line="8" column="10" lean-forward="true" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Linux/server.py">
+    <entry file="file://$PROJECT_DIR$/venv/lib/python3.8/site-packages/snap7/common.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        <state relative-caret-position="165">
+          <caret line="35" column="45" lean-forward="true" selection-start-line="35" selection-start-column="45" selection-end-line="35" selection-end-column="45" />
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Linux/my_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3">
-          <caret line="97" column="45" selection-start-line="97" selection-start-column="45" selection-end-line="97" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
