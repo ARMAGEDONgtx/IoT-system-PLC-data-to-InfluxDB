@@ -19,6 +19,10 @@ https://devconnected.com/how-to-install-influxdb-on-ubuntu-debian-in-2019/#II_In
 
 The data which is fetched from PLCs and send to database is configured via ConfigApp. It generates xml file which is read at the start of program.
 
+![Alt text](img/configapp.PNG?raw=true "ConfigApp")
+
+If you want to add new entry fill requiered fileds. In order to edit actual entries select PLC from drop down menu -> click find aliases -> select data from drop down menu -> clik find data and you will get actual config of selected data. You can edit it or modify. Remember that selected filed before "find data" click is the one that you are editing! 
+
 # Linux version - asynchronous
 
 Program works as linux deamon with use of systemd (take a look at https://github.com/torfsen/python-systemd-tutorial). It allows to monitor current status and easily start and stop acqusition. For every PLC in configuration is started new process and data is being processed in it. For n PLC is started n Python processes to boost up performance. 
