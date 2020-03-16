@@ -25,7 +25,10 @@ Program works as linux deamon with use of systemd (take a look at https://github
 
 # Windows version - synchrnous
 
-In windows version I decided to collect and send data as windows servise. It allows to monitor current status and easily start and stop acqusition. The asynchornous version was dropped due to problems with multiprocessing and service compatibility. So, data is collected one by one and send to database. Choose this version if you do not require fast acqusition.
+In windows version I decided to collect and send data as windows servise. It allows to monitor current status and easily start and stop acqusition. The asynchornous version was dropped due to problems with multiprocessing and service compatibility. So, data is collected one by one and send to database. Choose this version if you do not require fast acqusition. 
+
+In order to install service you have to generate exe file with PyInstaller, follow these steps:
+https://gist.github.com/guillaumevincent/d8d94a0a44a7ec13def7f96bfb713d3f
 
 
 
