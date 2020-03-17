@@ -40,7 +40,6 @@ class my_group():
     #assure to disconnect
     def __del__(self):
         self.plc.disconnect()
-        #self.ua_client.disconnect()
 
     def stop(self):
         self._stopev = True

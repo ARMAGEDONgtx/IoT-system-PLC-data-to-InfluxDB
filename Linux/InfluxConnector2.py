@@ -1,14 +1,12 @@
 import xml.etree.ElementTree as ET
-import re
 import snap7
 import time
 from snap7.util import *
 from snap7.snap7types import *
 import influxdb
-import socket
-import sys
 import multiprocessing
 
+config_PATH = '/home/poziadmin/Documents/Python_projects/Linux/config.xml'
 
 class my_data():
     def __init__(self, plc , type , area , address, alias , active, slot, opcua_var = None):
@@ -60,7 +58,6 @@ class my_group():
     def join_data_to_list(self,data_list):
         self.m_data_list = self.m_data_list + data_list
 
-    # TODO: async
     def update_items(self):
         try:
             #iterate through list
@@ -107,8 +104,7 @@ class my_group():
                     self.client.write_points(json_body1)
         except Exception as e:
             self.m_lock.acquire()
-            with open('/home/poziadmin/Documents/Python_projects/Linux/InfluxDBService.log', 'a') as f:
-                f.write(str(e) + '\n')
+            print(str(e))
             # error - try recconecting to plc
             self.plc.disconnect()
             # assure, that there is some data in list
@@ -141,7 +137,7 @@ def create_my_json(mes, name, value):
 def create_my_data_groups():
     # lock for threading
     my_lock = multiprocessing.Lock()
-    tree = ET.parse('/home/poziadmin/Documents/Python_projects/Linux/config.xml')
+    tree = ET.parse(config_PATH)
     root = tree.getroot()
     groups = []
     # get all configured plc
@@ -161,17 +157,18 @@ def create_my_data_groups():
     return groups
 
 
-
+#function that will be called in separrrate process
 def proc(group):
     while not group._stopev:
         group.update_items()
 
 
-
+#create groups by PLC
 groups = create_my_data_groups()
 jobs = []
 try:
     no = 0
+    #for each group start update process
     for g in groups:
         process = multiprocessing.Process(target=proc, args=(g,))
         jobs.append(process)
@@ -181,8 +178,6 @@ try:
         time.sleep(0.5)
 except Exception as e:
     print(e)
-    with open('/home/poziadmin/Documents/Python_projects/Linux/InfluxDBService.log', 'a') as f:
-        f.write(str(e) + '\n')
     print('stopped')
     for g in groups:
         g.stop()
