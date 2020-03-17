@@ -16,6 +16,25 @@ https://devconnected.com/how-to-install-influxdb-on-ubuntu-debian-in-2019/#II_In
 2. Install Python3.5+ on the same machine or on some other. 
 Requiremets for Linux and Windows version are in corresponding folders.
 
+## Linux
+3 Install Snap7. Here are the steps I followed:
+
+Download  and unzip snap7-full-1.4.2
+Compile the library
+cd snap7-full-1.4.2/build/unix
+sudo make -f x86_64_linux.mk
+
+Copy the compiled library to lib directories
+cd snap7-full-1.4.2/build/x86_64-linux
+cp libsnap7.so /usr/lib
+cp libsnap7.so /usr/local/lib
+
+It might be necessery to change common.py from snap7 package if you encouter problems (https://github.com/gijzelaerr/python-snap7/issues/68)
+
+## Windows
+3. Install Snap7. I recommend to followe this: https://python-snap7.readthedocs.io/en/latest/installation.html.
+
+Install python-snap7 (pip install python-snap7)
 # Configuration 
 
 The data which is fetched from PLCs and send to database is configured via ConfigApp. It generates xml file which is read at the start of program.
