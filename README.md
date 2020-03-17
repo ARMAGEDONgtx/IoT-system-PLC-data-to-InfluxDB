@@ -13,7 +13,8 @@ Structure:
 1. Setup machine with InfluxDB database stable realease (1.7.x). You can followe these steps
 https://devconnected.com/how-to-install-influxdb-on-ubuntu-debian-in-2019/#II_Installing_InfluxDB_20
 
-2. Install Python3.5+ on the same machine or on some other.
+2. Install Python3.5+ on the same machine or on some other. 
+Requiremets for Linux and Windows version are in corresponding folders.
 
 # Configuration 
 
@@ -27,6 +28,8 @@ If you want to add new entry fill requiered fileds. In order to edit actual entr
 
 Program works as linux deamon with use of systemd (take a look at https://github.com/torfsen/python-systemd-tutorial). It allows to monitor current status and easily start and stop acqusition. For every PLC in configuration is started new process and data is being processed in it. For n PLC is started n Python processes to boost up performance. 
 
+To create service we have to make unit file - follow previous tutorial.
+As the unit file is created we can inspect logs in the futere with:
 sudo journalctl -u [unit]
 
 # Windows version - synchrnous
