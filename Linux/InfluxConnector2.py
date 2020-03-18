@@ -36,14 +36,14 @@ class my_group():
         self.port = 8086
         self.user = 'poziadmin'
         self.password = 'QpAlZm1!'
-        self.db_name = 'PLC2InfluxDB'
-        self.client = influxdb.InfluxDBClient(self.host, self.port, self.user, self.password, self.db_name)
-        self.client.create_database(self.db_name)
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
             self.m_lock.acquire()
             self.plc.connect(self.m_data_list[0].m_plc, 0, eval(self.m_data_list[0].m_slot))
             self.m_lock.release()
+        self.db_name = self.m_data_list[0].m_plc
+        self.client = influxdb.InfluxDBClient(self.host, self.port, self.user, self.password, self.db_name)
+        self.client.create_database(self.db_name)
 
     #assure to disconnect
     def __del__(self):
@@ -123,10 +123,10 @@ def create_my_json(mes, name, value):
     j = [{
             "measurement": mes,
             "tags": {
-                "name": name
+
             },
             "fields": {
-                str(type(value)): value
+                name: value
             }
         }
         ]

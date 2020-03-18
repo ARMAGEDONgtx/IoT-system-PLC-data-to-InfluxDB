@@ -14,6 +14,9 @@ import win32serviceutil
 import multiprocessing
 
 
+config_PATH = 'C:\config.xml'
+log_PATH = 'C:\\InfluxDBService.log'
+
 class my_data():
     def __init__(self, plc , type , area , address, alias , active, slot, opcua_var = None):
         self.m_plc = plc
@@ -41,12 +44,12 @@ class my_group():
         self.port = 8086
         self.user = 'poziadmin'
         self.password = 'QpAlZm1!'
-        self.db_name = 'PLC2InfluxDB'
-        self.client = influxdb.InfluxDBClient(self.host, self.port, self.user, self.password, self.db_name)
-        self.client.create_database(self.db_name)
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
             self.plc.connect(self.m_data_list[0].m_plc, 0, eval(self.m_data_list[0].m_slot))
+        self.db_name = self.m_data_list[0].m_plc
+        self.client = influxdb.InfluxDBClient(self.host, self.port, self.user, self.password, self.db_name)
+        self.client.create_database(self.db_name)
 
     #assure to disconnect
     def __del__(self):
@@ -103,7 +106,7 @@ class my_group():
                     json_body1 = create_my_json(data.m_plc, data.m_alias, value)
                     self.client.write_points(json_body1)
         except Exception as e:
-            with open('C:\\InfluxDBService.log', 'a') as f:
+            with open(log_PATH, 'a') as f:
                 f.write(str(e) + '\n')
             # error - try recconecting to plc
             self.plc.disconnect()
@@ -122,10 +125,10 @@ def create_my_json(mes, name, value):
     j = [{
             "measurement": mes,
             "tags": {
-                "name": name
+
             },
             "fields": {
-                str(type(value)): value
+                name: value
             }
         }
         ]
@@ -134,7 +137,7 @@ def create_my_json(mes, name, value):
 
 # create my_data objects, group by PLC
 def create_my_data_groups():
-    tree = ET.parse('C:\config.xml')
+    tree = ET.parse(config_PATH)
     root = tree.getroot()
     groups = []
     # get all configured plc
@@ -172,14 +175,14 @@ class TestService(win32serviceutil.ServiceFramework):
             # create my_groups to update values later
             groups = create_my_data_groups()
         except Exception as e:
-            with open('C:\\InfluxDBService.log', 'a') as f:
+            with open(log_PATH, 'a') as f:
                 f.write(str(e)+'\n')
         while rc != win32event.WAIT_OBJECT_0:
             try:
                 for g in groups:
                     g.update_items()
             except Exception as e:
-                with open('C:\\InfluxDBService.log', 'a') as f:
+                with open(log_PATH, 'a') as f:
                     f.write(str(e) + '\n')
             rc = win32event.WaitForSingleObject(self.hWaitStop, 10)
 
