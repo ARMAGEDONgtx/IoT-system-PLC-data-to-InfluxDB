@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="182" column="16" lean-forward="true" selection-start-line="182" selection-start-column="16" selection-end-line="182" selection-end-column="16" />
+            <state relative-caret-position="349">
+              <caret line="185" selection-start-line="185" selection-end-line="185" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -369,8 +367,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="182" column="16" lean-forward="true" selection-start-line="182" selection-start-column="16" selection-end-line="182" selection-end-column="16" />
+        <state relative-caret-position="349">
+          <caret line="185" selection-start-line="185" selection-end-line="185" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
