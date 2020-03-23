@@ -6,7 +6,11 @@ from snap7.snap7types import *
 import influxdb
 import multiprocessing
 
+# CONFIGURATION --------------------------
 config_PATH = '/home/poziadmin/Documents/Python_projects/Linux/config.xml'
+influxDB_IP = '10.14.12.83'
+influxDB_user = 'poziadmin'
+influxDB_pass = 'QpAlZm1!'
 
 class my_data():
     def __init__(self, plc , type , area , address, alias , active, slot, opcua_var = None):
@@ -32,10 +36,10 @@ class my_group():
         self._stopev = False
         self.m_data_list= data_list
         self.plc = snap7.client.Client()
-        self.host = '10.14.12.83'
+        self.host = influxDB_IP
         self.port = 8086
-        self.user = 'poziadmin'
-        self.password = 'QpAlZm1!'
+        self.user = influxDB_user
+        self.password = influxDB_pass
         #if list no empty, create connection
         if len(self.m_data_list) > 0:
             self.m_lock.acquire()
