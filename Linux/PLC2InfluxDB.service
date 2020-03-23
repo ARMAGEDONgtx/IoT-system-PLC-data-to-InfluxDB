@@ -1,0 +1,7 @@
+[Unit]
+Description=Python service to send data from PLC to InfluxDB
+After=influxdb.service
+[Service]
+ExecStart=/home/poziadmin/Python-3.8.2/python /home/poziadmin/Documents/Python_projects/Linux/InfluxConnector2.py
+[Install]
+WantedBy=default.target
