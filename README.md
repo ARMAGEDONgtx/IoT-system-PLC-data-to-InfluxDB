@@ -49,12 +49,9 @@ If you want to add new entry fill requiered fileds. In order to edit actual entr
 
 At the begining of InfluxConnector2.py there is small code fragment, which you need to adjust to your infludb service. Fill it with your confiuration, example below:
 
-config_PATH = '/home/poziadmin/Documents/Python_projects/Linux/config.xml'
-
-influxDB_IP = '10.14.12.83'
-
-influxDB_user = 'admin'
-
+config_PATH = '/home/poziadmin/Documents/Python_projects/Linux/config.xml'\
+influxDB_IP = '10.14.12.83'\
+influxDB_user = 'admin'\
 influxDB_pass = 'admin!'
 
 # Linux version - asynchronous
@@ -63,21 +60,14 @@ Program works as linux deamon with use of systemd (take a look at https://github
 
 To create service we have to make unit file - follow previous tutorial. It will look like this:
 
-[Unit]
-Description=Python service to send data from PLC to InfluxDB
-
-PartOf=influxdb.service
-
-After=influxdb.service
-
-[Service]
-
-ExecStart=/home/poziadmin/Python-3.8.2/python /home/poziadmin/Documents/Python_projects/Linux/InfluxConnector2.py
-
-Restart=on-failure
-
-[Install]
-
+[Unit]\
+Description=Python service to send data from PLC to InfluxDB\
+PartOf=influxdb.service\
+After=influxdb.service\
+[Service]\
+ExecStart=/home/poziadmin/Python-3.8.2/python /home/poziadmin/Documents/Python_projects/Linux/InfluxConnector2.py\
+Restart=on-failure\
+[Install]\
 WantedBy=default.target
 
 Adjust ExecStart variable with your python path and path to the service file.
