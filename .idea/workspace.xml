@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="" />
+    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="185" selection-start-line="185" selection-end-line="185" />
+            <state relative-caret-position="15">
+              <caret line="37" column="40" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -39,8 +41,8 @@
       <list>
         <option value="$PROJECT_DIR$/venv/lib/python3.8/site-packages/snap7/common.py" />
         <option value="$PROJECT_DIR$/Linux/my_data.py" />
-        <option value="$PROJECT_DIR$/Windows/InfluxConnector2.py" />
         <option value="$PROJECT_DIR$/Linux/InfluxConnector2.py" />
+        <option value="$PROJECT_DIR$/Windows/InfluxConnector2.py" />
       </list>
     </option>
   </component>
@@ -57,6 +59,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -64,21 +67,10 @@
               <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
               <item name="Python_projects" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Python_projects" type="462c0819:PsiDirectoryNode" />
-              <item name="Linux" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Python_projects" type="462c0819:PsiDirectoryNode" />
-              <item name="Windows" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -240,9 +232,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="27" width="1362" height="742" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22771536" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22771536" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -253,8 +244,8 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49962547" weight="0.32941177" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49513108" visible="true" weight="0.26554623" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5048689" side_tool="true" visible="true" weight="0.26554623" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49363297" visible="true" weight="0.26890758" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.506367" side_tool="true" visible="true" weight="0.26890758" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49962547" weight="0.32941177" />
       <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -352,23 +343,24 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Linux/test.py" />
+    <entry file="file://$PROJECT_DIR$/Linux/PLC2InfluxDB.service">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Windows/test.py" />
     <entry file="file://$PROJECT_DIR$/Windows/InfluxConnector2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1035">
-          <caret line="42" column="33" lean-forward="true" selection-start-line="42" selection-start-column="33" selection-end-line="42" selection-end-column="33" />
+        <state relative-caret-position="15">
+          <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Linux/PLC2InfluxDB.service">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="185" selection-start-line="185" selection-end-line="185" />
+        <state relative-caret-position="15">
+          <caret line="37" column="40" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
