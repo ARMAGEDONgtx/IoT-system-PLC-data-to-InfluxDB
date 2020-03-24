@@ -7,6 +7,9 @@ try:
 except ImportError:
     from tkinter import Tk
 
+config_PATH = '/home/poziadmin/Documents/Python_projects/Linux/config.xml'
+
+
 def remove_empty_lines(filename):
     if not os.path.isfile(filename):
         print("{} does not exist ".format(filename))
@@ -22,7 +25,7 @@ def update_config(ip,slot,type,area,address_,alias,activ):
     root = None
     #check if file is not empty, if it's not - get actual root element
     try:
-        tree = ET.parse('config.xml')
+        tree = ET.parse(config_PATH)
         root = tree.getroot()
     except Exception as e:
         print(str(e))
@@ -54,10 +57,10 @@ def update_config(ip,slot,type,area,address_,alias,activ):
 
     #save xml file
     tree = ET.ElementTree(root)
-    tree.write("config.xml")
+    tree.write(config_PATH)
 
 def get_actual_plcs():
-    tree = ET.parse('config.xml')
+    tree = ET.parse(config_PATH)
     root = tree.getroot()
     plc_list = ['']
     # get all configured plc
@@ -69,7 +72,7 @@ def get_actual_plcs():
         return tuple(plc_list)
 
 def get_data_aliases(plc_name):
-    tree = ET.parse('config.xml')
+    tree = ET.parse(config_PATH)
     root = tree.getroot()
     all_list = []
     for plc in root:
@@ -82,7 +85,7 @@ def get_data_aliases(plc_name):
         return tuple(all_list)
 
 def get_data_by_alias(plc_name, alias):
-    tree = ET.parse('config.xml')
+    tree = ET.parse(config_PATH)
     root = tree.getroot()
     all_list = []
     for plc in root:
@@ -94,7 +97,7 @@ def get_data_by_alias(plc_name, alias):
     return all_list
 
 def delete_element(plc_name, alias):
-    tree = ET.parse('config.xml')
+    tree = ET.parse(config_PATH)
     root = tree.getroot()
     for plc in root:
         if plc.text == plc_name:
@@ -102,10 +105,10 @@ def delete_element(plc_name, alias):
                 if data[3].text == alias:
                     plc.remove(data)
     #save xml file
-    tree.write("config.xml")
+    tree.write(config_PATH)
 
 def update_element(plc_name, alias, param):
-    tree = ET.parse('config.xml')
+    tree = ET.parse(config_PATH)
     root = tree.getroot()
     for plc in root:
         if plc.text == plc_name:
@@ -117,14 +120,14 @@ def update_element(plc_name, alias, param):
                     data[3].text = param[3]
                     data[4].text = param[4]
     #save xml file
-    tree.write("config.xml")
+    tree.write(config_PATH)
 
 
 
 # -------- PROGRAM -----------------------------------------------------------------------------------------------------
 #change to nicer theme
 #sg.theme('Dark2')
-tree = ET.parse('config.xml')
+tree = ET.parse(config_PATH)
 root = tree.getroot()
 ar = ['S7AreaPE','S7AreaPA','S7AreaMK','S7AreaDB','S7AreaCT','S7AreaTM']
 areas = tuple(ar)
@@ -190,7 +193,7 @@ while(1):
         window.find_element('ACTIVATE_NEW').update(False)
     elif button == "Show raw configuration file":
         #get contect of xml file
-        tree = ET.parse("config.xml")
+        tree = ET.parse(config_PATH)
         root = tree.getroot()
         xml_str = ET.tostring(root,encoding='utf-8',method='xml')
         reparsed = xml.dom.minidom.parseString(xml_str)
