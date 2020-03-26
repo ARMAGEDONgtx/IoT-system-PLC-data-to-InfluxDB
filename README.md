@@ -47,7 +47,7 @@ The data which is fetched from PLCs and send to database is configured via Confi
   -> S7AreaPA - outputs (QW0 etc.)\
   -> S7AreaMK - standard memory (MW0 etc.)\
   -> S7AreaDB - data blocks (DB10.DBW0 etc.)\
-  -> S7AreaCT/TM - not tested\
+  -> S7AreaCT/TM - not tested
 - Data Type of wanted varaible(Bit, Byte, Word ...)
 - Actual address of variable (I0.0 or QW20 etc.)
 - Data alias - alias by which variable will be visible in the system
