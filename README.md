@@ -39,7 +39,19 @@ It might be necessery to change common.py from snap7 package if you encouter pro
 
 # Configuration 
 
-The data which is fetched from PLCs and send to database is configured via ConfigApp. It generates xml file which is read at the start of program.
+The data which is fetched from PLCs and send to database is configured via ConfigApp. It generates xml file which is read at the start of program. In configuration you specify (looking from left on below picture, app gives you hints what should you write in field):
+- IP address of PLC from which data will be fetched\
+- RACK slot of the PLC
+- Area of PLC Memory from which we get data:\
+  -> S7AreaPE - inputs (IW0 etc.)\
+  -> S7AreaPA - outputs (QW0 etc.)\
+  -> S7AreaMK - standard memory (MW0 etc.)\
+  -> S7AreaDB - data blocks (DB10.DBW0 etc.)\
+  -> S7AreaCT/TM - not tested
+- Data Type of wanted varaible(Bit, Byte, Word ...)
+- Actual address of variable (I0.0 or QW20 etc.)
+- Data alias - alias by which variable will be visible in the system
+- Activate - when activated data will be fetched, if not it will not be
 
 ![Alt text](img/configapp.PNG?raw=true "ConfigApp")
 
