@@ -8,7 +8,7 @@ except ImportError:
     from tkinter import Tk
 
 config_PATH = '/home/poziadmin/Documents/Python_projects/Linux/config.xml'
-
+foto_PATH = '/home/poziadmin/Documents/Python_projects/ConfigApp/xml.png'
 
 def remove_empty_lines(filename):
     if not os.path.isfile(filename):
@@ -21,7 +21,7 @@ def remove_empty_lines(filename):
         lines = filter(lambda x: x.strip(), lines)
         filehandle.writelines(lines)
 
-def update_config(ip,slot,type,area,address_,alias,activ):
+def update_config(ip,slot,type,area,address,alias,activ,interval):
     root = None
     #check if file is not empty, if it's not - get actual root element
     try:
@@ -39,9 +39,10 @@ def update_config(ip,slot,type,area,address_,alias,activ):
             data = ET.SubElement(child, 'data')
             ET.SubElement(data, 'data_type').text = type
             ET.SubElement(data, 'data_area').text = area
-            ET.SubElement(data, 'data_address').text = address_
+            ET.SubElement(data, 'data_address').text = address
             ET.SubElement(data, 'data_alias').text = alias
             ET.SubElement(data, 'active').text = activ
+            ET.SubElement(data, 'interval').text = interval
 
     #if plc is not duplicate - create new plc tag with other elements
     if not duplicate:
@@ -51,9 +52,10 @@ def update_config(ip,slot,type,area,address_,alias,activ):
         data = ET.SubElement(plc,'data')
         ET.SubElement(data,'data_type').text = type
         ET.SubElement(data,'data_area').text = area
-        ET.SubElement(data,'data_address').text = address_
+        ET.SubElement(data,'data_address').text = address
         ET.SubElement(data,'data_alias').text = alias
         ET.SubElement(data,'active').text = activ
+        ET.SubElement(data, 'interval').text = interval
 
     #save xml file
     tree = ET.ElementTree(root)
@@ -119,6 +121,7 @@ def update_element(plc_name, alias, param):
                     data[2].text = param[2]
                     data[3].text = param[3]
                     data[4].text = param[4]
+                    data[5].text = param[5]
     #save xml file
     tree.write(config_PATH)
 
@@ -126,13 +129,12 @@ def update_element(plc_name, alias, param):
 
 # -------- PROGRAM -----------------------------------------------------------------------------------------------------
 #change to nicer theme
-#sg.theme('Dark2')
+sg.theme('Dark2')
 tree = ET.parse(config_PATH)
 root = tree.getroot()
-ar = ['S7AreaPE','S7AreaPA','S7AreaMK','S7AreaDB','S7AreaCT','S7AreaTM']
-areas = tuple(ar)
-ty = ['S7WLBit','S7WLByte','S7WLWord','S7WLDWord','S7WLReal','S7WLCounter','S7WLTimer']
-types = tuple(ty)
+areas = tuple(['S7AreaPE','S7AreaPA','S7AreaMK','S7AreaDB','S7AreaCT','S7AreaTM'])
+types = tuple(['S7WLBit','S7WLByte','S7WLWord','S7WLDWord','S7WLReal','S7WLCounter','S7WLTimer'])
+intervals = tuple(['min', '1s', '2s', '5s', '10s', '60s', '300s'])
 
 #prepare layout
 data_row = [sg.Input('0.0.0.0',size=(15,1),key='PLC_NEW',tooltip='enter PLC IP address'),
@@ -140,7 +142,9 @@ data_row = [sg.Input('0.0.0.0',size=(15,1),key='PLC_NEW',tooltip='enter PLC IP a
             sg.Drop(values=areas,key='AREA_NEW',size=(10,1),tooltip='select data area',readonly=True,default_value=areas[0]),
             sg.Drop(values=types,key='TYPE_NEW',size=(14,1),tooltip='select data type',readonly=True,default_value=types[0]),
             sg.Input('0',size=(10,1),key='ADR_NEW',tooltip='enter data address'),
-            sg.Input('data_alias',size=(20,1),key='ALIAS_NEW',tooltip='enter data alias'),sg.Checkbox('Active',key='ACTIVATE_NEW')]
+            sg.Input('data_alias',size=(20,1),key='ALIAS_NEW',tooltip='enter data alias'),
+            sg.Drop(values=intervals,key='INTERVAL_NEW',size=(6,1),tooltip='select acquisition interval',readonly=True,default_value=intervals[3]),
+            sg.Checkbox('Active',key='ACTIVATE_NEW')]
 column0 = [
     [sg.Text('New entry',font=("Helvetica", 25))],
     [sg.Text('Update below fields with desiered configuration to fetch data from PLC')],
@@ -160,11 +164,13 @@ column1=[[sg.Text('PLC IP address\t\t\tData alias')],
 data_row = [sg.Drop(values=areas, auto_size_text=True,key='AREA_EDIT',size=(10,1),tooltip='update data area',readonly=True),
             sg.Drop(values=types, key='TYPE_EDIT',size=(14,1),tooltip='update data type',readonly=True),
             sg.Input('', size=(15, 1),key='ADR_EDIT',tooltip='update data address'),
-            sg.Input('', size=(20, 1),key='ALIAS_EDIT',tooltip='update data alias'), sg.Checkbox('Active',key='ACTIVATE_EDIT')]
+            sg.Input('', size=(20, 1),key='ALIAS_EDIT',tooltip='update data alias'),
+            sg.Drop(values=intervals,key='INTERVAL_EDIT',size=(6,1),tooltip='update acquisition interval',readonly=True,default_value=intervals[3]),
+            sg.Checkbox('Active',key='ACTIVATE_EDIT')]
 column1.append(data_row)
 # add buttons to enable actions
 column1.append([sg.Button("Update"), sg.Button('Delete')])
-column2 = [[sg.Image('xml.png',pad=(200,0))],
+column2 = [[sg.Image(foto_PATH,pad=(200,0))],
                [sg.Button("Show raw configuration file"), sg.Button('Exit',)]]
 
 
@@ -180,7 +186,7 @@ while(1):
     if button == None or button == "Exit":
         break
     elif button == "Add":
-        update_config(values['PLC_NEW'],values['SLOT_NEW'],values['TYPE_NEW'],values['AREA_NEW'],values['ADR_NEW'],values['ALIAS_NEW'],str(values['ACTIVATE_NEW']))
+        update_config(values['PLC_NEW'],values['SLOT_NEW'],values['TYPE_NEW'],values['AREA_NEW'],values['ADR_NEW'],values['ALIAS_NEW'], str(values['ACTIVATE_NEW']),values['INTERVAL_NEW'])
         plcs = get_actual_plcs()
         window.find_element('PLC').update(values=plcs)
     elif button == "Clear":
@@ -189,8 +195,9 @@ while(1):
         window.find_element('TYPE_NEW').update("")
         window.find_element('AREA_NEW').update("")
         window.find_element('ADR_NEW').update("")
-        window.find_element('ALIAS_NEW').update("")
+        window.find_element('ALIAS_NEW').update("data_alias")
         window.find_element('ACTIVATE_NEW').update(False)
+        window.find_element('INTERVAL_NEW').update(intervals[3])
     elif button == "Show raw configuration file":
         #get contect of xml file
         tree = ET.parse(config_PATH)
@@ -217,14 +224,17 @@ while(1):
             window.find_element('ADR_EDIT').update(data_plc[2])
             window.find_element('ALIAS_EDIT').update(data_plc[3])
             window.find_element('ACTIVATE_EDIT').update(eval(data_plc[4]))
+            window.find_element('INTERVAL_EDIT').update(data_plc[5])
         else:
             window.find_element('TYPE_EDIT').update("")
             window.find_element('AREA_EDIT').update("")
             window.find_element('ADR_EDIT').update("")
             window.find_element('ALIAS_EDIT').update("")
             window.find_element('ACTIVATE_EDIT').update(False)
+            window.find_element('INTERVAL_EDIT').update(intervals[3])
     elif button == 'Update':
-        params = [values['TYPE_EDIT'], values['AREA_EDIT'],values['ADR_EDIT'],values['ALIAS_EDIT'],str(values['ACTIVATE_EDIT'])]
+        params = [values['TYPE_EDIT'], values['AREA_EDIT'],values['ADR_EDIT'],values['ALIAS_EDIT'],
+                  str(values['ACTIVATE_EDIT']),values['INTERVAL_EDIT']]
         update_element(values['PLC'], values['ALIAS'], params)
         aliases_plc = get_data_aliases(values['PLC'])
         window.find_element('ALIAS').update(values=aliases_plc)

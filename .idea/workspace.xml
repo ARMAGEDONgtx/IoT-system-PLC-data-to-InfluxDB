@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="" />
+    <list default="true" id="6287ebcd-2414-4d6c-bed0-27b0aca359ee" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConfigApp/ConfigApp.py" beforeDir="false" afterPath="$PROJECT_DIR$/ConfigApp/ConfigApp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Linux/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Linux/config.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,13 +14,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="42" column="44" selection-start-line="42" selection-start-column="44" selection-end-line="42" selection-end-column="44" />
+            <state relative-caret-position="45">
+              <caret line="9" column="2" selection-start-line="9" selection-end-line="9" selection-end-column="74" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ConfigApp/ConfigApp.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="91">
+              <caret line="130" column="27" selection-start-line="130" selection-start-column="27" selection-end-line="130" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+                <element signature="e#361#672#0" />
+                <element signature="e#746#2190#0" />
+                <element signature="e#2096#2348#0" />
+                <element signature="e#2386#2678#0" />
+                <element signature="e#2724#3024#0" />
+                <element signature="e#3067#3330#0" />
+                <element signature="e#3380#3826#0" />
               </folding>
             </state>
           </provider>
@@ -31,6 +54,15 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>&quot;config.xml&quot;</find>
+      <find>'config.xml'</find>
+      <find>update_config</find>
+      <find>get_data_by_alias</find>
+      <find>update_element</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -41,6 +73,7 @@
         <option value="$PROJECT_DIR$/Linux/my_data.py" />
         <option value="$PROJECT_DIR$/Linux/InfluxConnector2.py" />
         <option value="$PROJECT_DIR$/Windows/InfluxConnector2.py" />
+        <option value="$PROJECT_DIR$/ConfigApp/ConfigApp.py" />
       </list>
     </option>
   </component>
@@ -64,6 +97,16 @@
             <path>
               <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
               <item name="Python_projects" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Python_projects" type="462c0819:PsiDirectoryNode" />
+              <item name="ConfigApp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Python_projects" type="462c0819:PsiDirectoryNode" />
+              <item name="Linux" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Python_projects" type="b2602c69:ProjectViewProjectNode" />
@@ -104,7 +147,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.InfluxConnector2">
+  <component name="RunManager" selected="Python.ConfigApp">
     <configuration name="ConfigApp" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="OPC" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -212,8 +255,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.InfluxConnector2" />
         <item itemvalue="Python.ConfigApp" />
+        <item itemvalue="Python.InfluxConnector2" />
         <item itemvalue="Python.server" />
         <item itemvalue="Python.my_data" />
         <item itemvalue="Python.tests" />
@@ -235,20 +278,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="27" width="1362" height="742" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22771536" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4966292" weight="0.3277311" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4988764" visible="true" weight="0.32941177" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49513108" visible="true" weight="0.3277311" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49962547" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49962547" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49363297" visible="true" weight="0.26890758" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.506367" side_tool="true" visible="true" weight="0.26890758" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4988764" weight="0.32941177" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49213484" weight="0.2672269" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5048689" side_tool="true" visible="true" weight="0.3277311" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49962547" weight="0.32941177" />
       <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -290,16 +334,6 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ConfigApp/ConfigApp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.8/site-packages/snap7/common.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -325,20 +359,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Linux/my_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="102" column="31" lean-forward="true" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Linux/server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-195">
-          <caret line="11" column="12" lean-forward="true" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Linux/my_data.py" />
+    <entry file="file://$PROJECT_DIR$/Linux/server.py" />
     <entry file="file://$PROJECT_DIR$/Linux/test.py" />
     <entry file="file://$PROJECT_DIR$/Linux/PLC2InfluxDB.service">
       <provider selected="true" editor-type-id="text-editor" />
@@ -356,10 +378,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Linux/InfluxConnector2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="42" column="44" selection-start-line="42" selection-start-column="44" selection-end-line="42" selection-end-column="44" />
+        <state relative-caret-position="45">
+          <caret line="9" column="2" selection-start-line="9" selection-end-line="9" selection-end-column="74" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ConfigApp/ConfigApp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="130" column="27" selection-start-line="130" selection-start-column="27" selection-end-line="130" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#361#672#0" />
+            <element signature="e#746#2190#0" />
+            <element signature="e#2096#2348#0" />
+            <element signature="e#2386#2678#0" />
+            <element signature="e#2724#3024#0" />
+            <element signature="e#3067#3330#0" />
+            <element signature="e#3380#3826#0" />
           </folding>
         </state>
       </provider>
