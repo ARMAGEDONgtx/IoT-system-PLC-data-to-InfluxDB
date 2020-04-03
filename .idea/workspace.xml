@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbbb0fd3-39d8-44d4-b962-d803594ef800" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/OPC.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/OPC.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Windows/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Windows/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/test" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,12 +29,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="135" />
-    <option name="y" value="49" />
-    <option name="width" value="990" />
-    <option name="height" value="701" />
   </component>
   <component name="ProjectId" id="1XwXnt13hTmkKYpAVG2ieAbWvvi" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
