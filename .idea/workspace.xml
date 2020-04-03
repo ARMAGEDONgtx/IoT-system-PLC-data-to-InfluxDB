@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbbb0fd3-39d8-44d4-b962-d803594ef800" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/OPC.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/OPC.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Windows/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Windows/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,18 +43,18 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/ConfigApp" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/ConfigApp" />
-      <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC" />
-      <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC\venv" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Linux" />
       <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC\ConfigApp" />
       <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ConfigApp" />
+      <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC" />
+      <recent name="C:\Users\WrobleM\PycharmProjects\PP\OPC\venv" />
     </key>
   </component>
   <component name="RunDashboard">
