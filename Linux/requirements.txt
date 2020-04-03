@@ -1,0 +1,13 @@
+certifi==2019.11.28
+chardet==3.0.4
+idna==2.9
+influxdb==5.2.3
+lxml==4.5.0
+opcua==0.98.9
+PySimpleGUI==4.16.0
+python-dateutil==2.8.1
+python-snap7==0.10
+pytz==2019.3
+requests==2.23.0
+six==1.14.0
+urllib3==1.25.8
