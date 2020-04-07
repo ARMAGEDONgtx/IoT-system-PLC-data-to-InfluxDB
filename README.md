@@ -76,7 +76,7 @@ Description=Python service to send data from PLC to InfluxDB\
 PartOf=influxdb.service\
 After=influxdb.service\
 [Service]\
-ExecStart=/home/poziadmin/Python-3.8.2/python /home/poziadmin/Documents/Python_projects/Linux/InfluxConnector2.py\
+ExecStart=/path_to_python/Python-3.8.2/python /path_to_app_file/InfluxConnector2.py\
 Restart=on-failure\
 [Install]\
 WantedBy=default.target
