@@ -19,9 +19,9 @@ Requiremets for Linux and Windows version are in corresponding folders.
 ## Linux
 3. Install Snap7. Here are the steps I followed:
 
-Download  and unzip snap7-full-1.4.2
-Compile the library
-cd snap7-full-1.4.2/build/unix
+Download  and unzip snap7-full-1.4.2\
+Compile the library\
+cd snap7-full-1.4.2/build/unix\
 sudo make -f x86_64_linux.mk
 
 Copy the compiled library to lib directories
