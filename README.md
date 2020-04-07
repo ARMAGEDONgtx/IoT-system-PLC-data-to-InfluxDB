@@ -23,11 +23,10 @@ Download  and unzip snap7-full-1.4.2\
 Compile the library\
 cd snap7-full-1.4.2/build/unix\
 sudo make -f x86_64_linux.mk
-
-Copy the compiled library to lib directories
-cd snap7-full-1.4.2/build/x86_64-linux
-cp libsnap7.so /usr/lib
-cp libsnap7.so /usr/local/lib
+Copy the compiled library to lib directories\
+cd snap7-full-1.4.2/build/x86_64-linux\
+cp libsnap7.so /usr/lib\
+cp libsnap7.so /usr/local/lib\
 Install python-snap7 (pip install python-snap7)
 
 It might be necessery to change common.py from snap7 package if you encouter problems (https://github.com/gijzelaerr/python-snap7/issues/68)
