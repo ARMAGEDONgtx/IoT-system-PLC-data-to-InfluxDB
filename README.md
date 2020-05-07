@@ -19,15 +19,14 @@ Requiremets for Linux and Windows version are in corresponding folders.
 ## Linux
 3. Install Snap7. Here are the steps I followed:
 
-Download  and unzip snap7-full-1.4.2
-Compile the library
-cd snap7-full-1.4.2/build/unix
+Download  and unzip snap7-full-1.4.2\
+Compile the library\
+cd snap7-full-1.4.2/build/unix\
 sudo make -f x86_64_linux.mk
-
-Copy the compiled library to lib directories
-cd snap7-full-1.4.2/build/x86_64-linux
-cp libsnap7.so /usr/lib
-cp libsnap7.so /usr/local/lib
+Copy the compiled library to lib directories\
+cd snap7-full-1.4.2/build/x86_64-linux\
+cp libsnap7.so /usr/lib\
+cp libsnap7.so /usr/local/lib\
 Install python-snap7 (pip install python-snap7)
 
 It might be necessery to change common.py from snap7 package if you encouter problems (https://github.com/gijzelaerr/python-snap7/issues/68)
@@ -77,7 +76,7 @@ Description=Python service to send data from PLC to InfluxDB\
 PartOf=influxdb.service\
 After=influxdb.service\
 [Service]\
-ExecStart=/home/poziadmin/Python-3.8.2/python /home/poziadmin/Documents/Python_projects/Linux/InfluxConnector2.py\
+ExecStart=/path_to_python/Python-3.8.2/python /path_to_app_file/InfluxConnector2.py\
 Restart=on-failure\
 [Install]\
 WantedBy=default.target
