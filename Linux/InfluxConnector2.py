@@ -55,9 +55,9 @@ class my_group():
     def connect(self):
         #if list no empty, create connection
         if len(self.data_list) > 0:
-            self.m_lock.acquire()
-            self.plc.connect(self.data_list[0].m_plc, 0, eval(self.data_list[0].m_slot))
-            self.m_lock.release()
+            self.lock_plc.acquire()
+            self.plc.connect(self.data_list[0].m_plc, 0, self.data_list[0].m_slot)
+            self.lock_plc.release()
         self.db_name = self.data_list[0].m_plc
         self.client = influxdb.InfluxDBClient(self.host, self.port, self.user, self.password, self.db_name)
         self.client.create_database(self.db_name)
