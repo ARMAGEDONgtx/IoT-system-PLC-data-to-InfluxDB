@@ -131,7 +131,7 @@ class my_group():
                         wait_time = re.findall(r'[0-9]+', upd_int)
                         # check if we didnt exceeded time, if not lets wait
                         if float(wait_time[0])-diff >= 0.0:
-                            time.sleep(float(wait_time[0]-diff))
+                            time.sleep(float(wait_time[0])-diff)
             except Exception as e:
                 self.lock_plc.acquire()
                 print(str(e))
