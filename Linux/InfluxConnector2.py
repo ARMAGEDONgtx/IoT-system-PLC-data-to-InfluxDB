@@ -1,3 +1,13 @@
+'''
+PLC data acquisition APP.
+Storage: InfluxDB
+Fetch API: Snap7
+GUI: PySimpleGUI
+Author: Michal Wroblewski
+'''
+
+
+
 import xml.etree.ElementTree as ET
 import snap7
 import time
@@ -15,7 +25,24 @@ influxDB_user = 'poziadmin'
 influxDB_pass = 'QpAlZm1!'
 
 class my_data():
-    def __init__(self, plc , type , area , address, alias , active, slot, interval, opcua_var = None):
+    '''
+    Class for data management. It contains all necessery information
+    for data to be get from PLC
+    '''
+
+    def __init__(self, plc : str, type : snap7.snap7types, area : snap7.snap7types,
+                 address : str, alias : str, active : bool, slot : str, interval : str):
+        '''
+        Init function
+        :param plc: String - PLC IP address
+        :param type: snap7type - data type in PLC
+        :param area: snap7type - memory area of read in PLC
+        :param address: String - variable address in PLC
+        :param alias: String - alias name
+        :param active: Bool - True: acquistion is active
+        :param slot: String - PLC slot number on the rack
+        :param interval: String - time interval of data acqusition
+        '''
         self.m_plc = plc
         self.m_type = eval(type)
         self.m_area = eval(area)
@@ -25,16 +52,27 @@ class my_data():
         self.m_slot = eval(slot)
         self.m_value = 0.0
         self.interval = interval
-        self.m_opcua_var = opcua_var
 
     def show(self):
+        '''
+        Print basic information about data
+        '''
         print("PLC IP: {0}, TYPE: {1}, AREA: {2}, ADDRESS: {3}, ALIAS: {4}, ACTIVE: {5}".format(
             self.m_plc, self.m_type, self.m_area, self.m_address, self.m_alias, self.m_active
         ))
 
 
 class my_group():
+    '''
+    Class for data grouping and performing operations on groups
+    '''
     def __init__(self, data_list, lock1, lock2):
+        '''
+        Init function
+        :param data_list: list of instances of my_data class
+        :param lock1: multithreading lock
+        :param lock2: multithreading lock
+        '''
         self.lock_plc = lock1
         self.lock_pipe = lock2
         self._stopev = False
@@ -48,11 +86,19 @@ class my_group():
         self.group_by_interval()
 
     def group_by_interval(self):
+        '''
+        group data into subpgroubs based on interval
+        :return:
+        '''
         for data in self.data_list:
             self.subgroups[data.interval].append(data)
 
 
     def connect(self):
+        '''
+        Connect to the PLC and to the InfluxDB
+        :return:
+        '''
         #if list no empty, create connection
         if len(self.data_list) > 0:
             self.lock_plc.acquire()
@@ -76,6 +122,12 @@ class my_group():
         self.data_list = self.data_list + data_list
 
     def update_items(self, group, interval_based = True):
+        '''
+        Fetching data from PLC
+        :param group: group to be processed
+        :param interval_based: True - fetch data with correspnding time interval
+        :return:
+        '''
         diff = 0.0
         # continous fucntion
         while (self._stopev != True):
@@ -143,6 +195,10 @@ class my_group():
                 self.lock_plc.release()
 
     def update_items_by_interval(self):
+        '''
+        Create separate threads for each subgroup and ipdate functions
+        :return:
+        '''
         self.connect()
         #create thread for each subgroup
         for inter in self.subgroups.keys():
@@ -153,13 +209,24 @@ class my_group():
             th.start()
 
 
-# Function to extract all the numbers from the given string
 def getNumbers(str):
+    '''
+    Function to extract all the numbers from the given string
+    :param str:
+    :return:
+    '''
     array = re.findall(r'[0-9]+', str)
     return array
 
 
 def create_my_json(mes, name, value):
+    '''
+    Create json for InfluxDB data REST API
+    :param mes: measurement name in InlfuxDB
+    :param name: field name in InlfuxDB
+    :param value: actual value to be inserted in field
+    :return:
+    '''
     j = [{
             "measurement": mes,
             "tags": {
@@ -173,9 +240,13 @@ def create_my_json(mes, name, value):
     return j
 
 
-# create my_data objects, group by PLC
-def create_my_data_groups():
 
+def create_my_data_groups():
+    '''
+    create my_data objects, group by PLC
+    Configuration is read from config.xml
+    :return:
+    '''
     tree = ET.parse(config_PATH)
     root = tree.getroot()
     groups = []
@@ -199,8 +270,12 @@ def create_my_data_groups():
     return groups
 
 
-#function that will be called in separrrate process
 def proc(group):
+    '''
+    Function that will be called in separrrate process - avoiding GIL lock
+    :param group: group to be processed
+    :return:
+    '''
     group.update_items_by_interval()
 
 

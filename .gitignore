@@ -1,0 +1,9 @@
+.idea
+.idea/
+docs
+docs/
+.idea/workspace.xml
+venv
+venv/
+__pycache__
+img

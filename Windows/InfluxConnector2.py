@@ -21,7 +21,18 @@ influxDB_user = 'poziadmin'
 influxDB_pass = 'QpAlZm1!'
 
 class my_data():
-    def __init__(self, plc , type , area , address, alias , active, slot, opcua_var = None):
+    def __init__(self, plc , type , area , address, alias , active, slot):
+        '''
+        Init function
+        :param plc: String - PLC IP address
+        :param type: snap7type - data type in PLC
+        :param area: snap7type - memory area of read in PLC
+        :param address: String - variable address in PLC
+        :param alias: String - alias name
+        :param active: Bool - True: acquistion is active
+        :param slot: String - PLC slot number on the rack
+        :param interval: String - time interval of data acqusition
+        '''
         self.m_plc = plc
         self.m_type = type
         self.m_area = area
@@ -30,15 +41,20 @@ class my_data():
         self.m_active = active
         self.m_slot = slot
         self.m_value = 0.0
-        self.m_opcua_var = opcua_var
 
     def show(self):
+        '''
+        Print basic information about data
+        '''
         print("PLC IP: {0}, TYPE: {1}, AREA: {2}, ADDRESS: {3}, ALIAS: {4}, ACTIVE: {5}".format(
             self.m_plc, self.m_type, self.m_area, self.m_address, self.m_alias, self.m_active
         ))
 
 
 class my_group():
+    '''
+    Class for data grouping and performing operations on groups
+    '''
     def __init__(self, data_list):
         self._stopev = False
         self.m_data_list= data_list
@@ -69,6 +85,10 @@ class my_group():
 
     # TODO: async
     def update_items(self):
+        '''
+        Fetching data from PLC
+        :return:
+        '''
         try:
             #iterate through list
             for data in self.m_data_list:
@@ -118,13 +138,24 @@ class my_group():
                 self.plc.connect(self.m_data_list[0].m_plc, 0, eval(self.m_data_list[0].m_slot))
 
 
-# Function to extract all the numbers from the given string
 def getNumbers(str):
+    '''
+    Function to extract all the numbers from the given string
+    :param str:
+    :return:
+    '''
     array = re.findall(r'[0-9]+', str)
     return array
 
 
 def create_my_json(mes, name, value):
+    '''
+    Create json for InfluxDB data REST API
+    :param mes: measurement name in InlfuxDB
+    :param name: field name in InlfuxDB
+    :param value: actual value to be inserted in field
+    :return:
+    '''
     j = [{
             "measurement": mes,
             "tags": {
@@ -138,8 +169,13 @@ def create_my_json(mes, name, value):
     return j
 
 
-# create my_data objects, group by PLC
+
 def create_my_data_groups():
+    '''
+    create my_data objects, group by PLC
+    Configuration is read from config.xml
+    :return:
+    '''
     tree = ET.parse(config_PATH)
     root = tree.getroot()
     groups = []
@@ -160,19 +196,34 @@ def create_my_data_groups():
     return groups
 
 class TestService(win32serviceutil.ServiceFramework):
+    '''
+    Class for Winodws service management
+    '''
     _svc_name_ = "InfluxConnector3.0"
     _svc_display_name_ = "InfluxConnector3.0"
 
     def __init__(self, args):
+        '''
+        Create Service
+        :param args:
+        '''
         win32serviceutil.ServiceFramework.__init__(self, args)
         self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
         socket.setdefaulttimeout(60)
 
     def SvcStop(self):
+        '''
+        Stop service handle
+        :return:
+        '''
         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
         win32event.SetEvent(self.hWaitStop)
 
     def SvcDoRun(self):
+        '''
+        Start service handle
+        :return:
+        '''
         rc = None
         try:
             # create my_groups to update values later

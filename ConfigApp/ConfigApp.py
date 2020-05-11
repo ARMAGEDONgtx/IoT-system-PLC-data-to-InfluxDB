@@ -1,3 +1,8 @@
+'''
+Simple GUI application for managing data configuraion in the system
+'''
+
+
 import xml.etree.ElementTree as ET
 import PySimpleGUI as sg
 import xml.dom.minidom
@@ -11,6 +16,11 @@ config_PATH = '/home/poziadmin/Documents/Python_projects/Linux/config.xml'
 foto_PATH = '/home/poziadmin/Documents/Python_projects/ConfigApp/xml.png'
 
 def remove_empty_lines(filename):
+    '''
+    Remove empty lines from config file - for nice display
+    :param filename:
+    :return:
+    '''
     if not os.path.isfile(filename):
         print("{} does not exist ".format(filename))
         return
@@ -22,6 +32,18 @@ def remove_empty_lines(filename):
         filehandle.writelines(lines)
 
 def update_config(ip,slot,type,area,address,alias,activ,interval):
+    '''
+    Update config file with following variables
+    :param ip: PLC IP address
+    :param slot: PLC slot number in rack
+    :param type: data type of variable in PLC
+    :param area: memeory area of read in PLC
+    :param address: variable address in PLC
+    :param alias: alias name
+    :param activ: True - data acquisition is active
+    :param interval: time interval of data acqusition
+    :return:
+    '''
     root = None
     #check if file is not empty, if it's not - get actual root element
     try:
@@ -62,6 +84,10 @@ def update_config(ip,slot,type,area,address,alias,activ,interval):
     tree.write(config_PATH)
 
 def get_actual_plcs():
+    '''
+    Get all PLCs in configuration
+    :return:
+    '''
     tree = ET.parse(config_PATH)
     root = tree.getroot()
     plc_list = ['']
@@ -74,6 +100,11 @@ def get_actual_plcs():
         return tuple(plc_list)
 
 def get_data_aliases(plc_name):
+    '''
+    Get all data aliases for given PLC
+    :param plc_name:
+    :return:
+    '''
     tree = ET.parse(config_PATH)
     root = tree.getroot()
     all_list = []
@@ -87,6 +118,12 @@ def get_data_aliases(plc_name):
         return tuple(all_list)
 
 def get_data_by_alias(plc_name, alias):
+    '''
+    Get all informiat about data based on alias
+    :param plc_name:
+    :param alias:
+    :return:
+    '''
     tree = ET.parse(config_PATH)
     root = tree.getroot()
     all_list = []
@@ -99,6 +136,12 @@ def get_data_by_alias(plc_name, alias):
     return all_list
 
 def delete_element(plc_name, alias):
+    '''
+    Dalete data for corresponding alias
+    :param plc_name:
+    :param alias:
+    :return:
+    '''
     tree = ET.parse(config_PATH)
     root = tree.getroot()
     for plc in root:
@@ -110,6 +153,13 @@ def delete_element(plc_name, alias):
     tree.write(config_PATH)
 
 def update_element(plc_name, alias, param):
+    '''
+    Update data with corresponnnding alias
+    :param plc_name:
+    :param alias:
+    :param param: paramas list to be updated
+    :return:
+    '''
     tree = ET.parse(config_PATH)
     root = tree.getroot()
     for plc in root:
@@ -180,7 +230,9 @@ main_layout = [[sg.Column(column0)],[sg.Column(column1)],
 window = sg.Window('Configuration').Layout(main_layout)
 
 data_plc = None
-#main gui loop
+'''
+Main loop for GUI
+'''
 while(1):
     button, values = window.Read()
     if button == None or button == "Exit":
