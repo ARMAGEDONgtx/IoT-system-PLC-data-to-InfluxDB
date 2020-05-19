@@ -4,7 +4,7 @@ Simple GUI application for managing data configuraion in the system
 
 
 import xml.etree.ElementTree as ET
-import PySimpleGUI as sg
+import PySimpleGUIWeb as sg
 import xml.dom.minidom
 import os
 try:
