@@ -1,6 +1,6 @@
 # PLC_to_InfluxDB
 
-This project aim is to provide free software to fetch data from plcs (Siemens S7-300/400/1200/1500) and store it. Used stack is completly opensource. I used InfluDB as data storage, so application principle is following Big Data paradigm. InfluxDB allows to process your data in many interesting ways such as anomaly detecting, forecasting and of course basic data visualization. It also has retention policy, which allows to control your storage space.
+This project aim is to provide free software to fetch data from plcs (Siemens S7-300/400/1200/1500) and store it. Used stack is completly opensource. I used InfluDB as data storage, which allows to process your data in many interesting ways such as anomaly detecting, forecasting and of course basic data visualization. It also has retention policy, which allows to control your storage space.
 
 For polish users you can read some paper we made about it (just basic explanation and some performance tests) -> https://www.overleaf.com/read/wfqmzmtnbmcb
 
