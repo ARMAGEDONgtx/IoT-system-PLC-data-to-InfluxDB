@@ -94,6 +94,9 @@ In order to install service you have to generate exe file with PyInstaller, foll
 https://gist.github.com/guillaumevincent/d8d94a0a44a7ec13def7f96bfb713d3f
 
 
+# Visualization capabilities
+
+![grafana (1)](https://user-images.githubusercontent.com/30839728/85235735-b1e45480-b417-11ea-9fd6-294940092431.PNG)
 
 
 
