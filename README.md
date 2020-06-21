@@ -5,7 +5,7 @@ This project aim is to provide free software to fetch data from plcs (Siemens S7
 For polish users you can read some paper we made about it (just basic explanation and some performance tests) -> https://www.overleaf.com/read/wfqmzmtnbmcb
 
 Structure:
-![Alt text](img/Structure.png?raw=true "Structure")
+![struct](https://user-images.githubusercontent.com/30839728/85235569-4483f400-b416-11ea-9915-26ea01a363bd.PNG)
 
 
 # Setup steps
