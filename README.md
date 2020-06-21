@@ -52,7 +52,8 @@ The data which is fetched from PLCs and send to database is configured via Confi
 - Data alias - alias by which variable will be visible in the system
 - Activate - when activated data will be fetched, if not it will not be
 
-![Alt text](img/configapp.PNG?raw=true "ConfigApp")
+![config_app_1 (1)](https://user-images.githubusercontent.com/30839728/85235753-ce808c80-b417-11ea-921c-5f30bc9732e6.PNG)
+
 
 If you want to add new entry fill requiered fileds. In order to edit actual entries select PLC from drop down menu -> click find aliases -> select data from drop down menu -> clik find data and you will get actual config of selected data. You can edit it or modify. Remember that selected filed before "find data" click is the one that you are editing! 
 
