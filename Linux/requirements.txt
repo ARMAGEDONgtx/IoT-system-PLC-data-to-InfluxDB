@@ -2,7 +2,7 @@ certifi==2019.11.28
 chardet==3.0.4
 idna==2.9
 influxdb==5.2.3
-lxml==4.5.0
+lxml==4.6.2
 opcua==0.98.9
 PySimpleGUI==4.16.0
 python-dateutil==2.8.1
