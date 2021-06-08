@@ -29,7 +29,7 @@ opcua==0.98.9
 opcua-client==0.8.0
 opcua-widgets==0.5.8
 pefile==2019.4.18
-Pillow==6.2.1
+Pillow==8.2.0
 pluggy==0.12.0
 protobuf==3.8.0
 py==1.8.0
