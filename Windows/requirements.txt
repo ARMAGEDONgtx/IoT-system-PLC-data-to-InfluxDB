@@ -45,7 +45,7 @@ PySimpleGUIWx==0.14.0
 python-dateutil==2.8.0
 python-snap7==0.10
 pytz==2019.3
-pywin32==227
+pywin32==301
 pywin32-ctypes==0.2.0
 requests==2.22.0
 shiboken2==5.13.2
